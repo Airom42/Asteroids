@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <include id="utility_ship.xml"/>
+
+  <animation id="utility_droid.walk" x="1" count="8"/>
+  <animation id="utility_droid.fly" x="9" count="12"/>
+  <animation id="utility_droid.attack" x="0" count="1" length="5"/>
+
+  <familiar id="utility_droid" type="flying" canWalk="true" costPerSecond="1">
+      <breakPower amount="1" cost="3" /><light tile="light.headlamp" offsetX="-65" color="999999" />
+      <attack type="projectile" damage="5" cost="10" range="10" sfx="hunter_bot_attack">
+        <projectile tile="war_bot.bolt" animation="war_bot.bolt" speed="5" offsetY="2" delay="4">
+          <hitEffect tile="war_bot.bolt" animation="war_bot.bolt.impact" color="9999ff" />
+        </projectile>
+      </attack>
+  </familiar>
+  <item id="utility_droid" type="animal" cost="1250" weight="15" slot="familiar" flyOrbit="true" needsO2="false" capacity="50" durability="500" oxygen="25" icon="utility_droid">
+      <action id="equip" /><action id="rename" /><equipCost storage="power" cost="25" durability="-25" full="false" />
+      <familiar id="utility_droid" tile="utility_droid" animation="utility_droid" />
+  </item>
+
+  <recipe id="utility_droid" creates="utility_droid" type="advanced_lab" available="getFlag('make_utility_droid')">
+    <item id="war_bot" count="1" />
+    <item id="worker_bot" count="1" />
+    <item id="ship_parts" count="1" />
+    <item id="exotic_matter" count="1" />
+  </recipe>
+
+  <tile id="utility_ship_gun" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
+  <animation id="equipment.utility_ship_gun" count="3"/>
+  <item id="utility_ship_gun" type="equipment" slot="attack" equipOn="utility_ship" cost="400" weight="20" range="10" icon="utility_ship.gun.ico" delay="-2" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-6" offsetX="2" animation="item3">
+    <action id="setProjectile" />
+  </item>
+
+  <tile id="utility_ship_laser" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
+  <animation id="equipment.utility_ship_laser" >
+      <frame x="0" />
+      <frame x="3" count="4" length=".5"/>
+  </animation>
+  <tile id="utility_laser_bolt" sheet="utility_ship.1" x="22"/>
+  <animation id="utility_laser_bolt" count="3"/>
+  <animation id="utility_laser_bolt.impact" count="3"/>
+  <item id="utility_ship_laser" type="equipment" slot="attack" equipOn="utility_ship" cost="400" delay="3" power="20" weight="20" range="20" attack="15" icon="utility_ship.laser.ico">
+    <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
+      <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+    </projectile>
+  </item>
+
+
+  <tile id="utility_ship" sheet="utility_ship.1" x="0"/>
+  <animation id="utility_ship.impulse" x="11" count="4" glow="true" />
+  <animation id="utility_ship.fly" count="1" length="4">
+    <append tile="utility_ship" animation="utility_ship.impulse" />
+  </animation>
+  <animation id="utility_ship.antigrav" x="7" count="4"  glow="true" />
+  <animation id="utility_ship.hover" count="1" length="4">
+    <append tile="utility_ship" animation="utility_ship.antigrav" />
+  </animation>
+  <tile id="utility_ship.shield" sheet="utility_ship.2" x="0"/>
+  <animation id="utility_ship.shield" count="3" length="3" glow="true"/>
+  <animation id="utility_ship.shield.hit" x="3" count="1" length="10" glow="true"/>
+
+  <vehicle id="utility_ship" tile="utility_ship" health="1000" defense="4" speed="5" type="spaceship" title="item.names>utility_ship" block_icon="fighter.shields.ico" block_behind="true" block_move="true" flight_height="999" fuel="5000" underground="true" underwater="true" max_weight="10000" efficiency="0">
+    <repair id="titanium" value="250" /><slot id="attack" /><fuel id="uranium" fuel="1000"/><light tile="light.headlamp" offsetX="-80" offsetY="5"/>
+    <shield tile="utility_ship.shield" animation="utility_ship.shield" hit_front="utility_ship.shield.hit" hit_back="utility_ship.shield.hit"/>
+    <listItem title="vehicle.pack_up">
+      <closeWindows /><action>this.dismount(); player.inventory.addAll(this.inventory);</action>
+      <invokeLater>
+        <remove object="this" />
+        <item id="utility_ship" value="this.health" ><parameter id="p" value="this.equipment.getItemId('attack')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+      </invokeLater>
+    </listItem>
+    <mount><action>setGameScale(2); if(this.renderer != null) this.renderer.scaleX = 1;</action></mount>
+    <dismount><action>setGameScale(1); if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+  </vehicle>
+
+  <item id="utility_ship" type="object" cost="0" weight="100" icon="utility_ship.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+    <action id="plant" name="vehicle.deploy" object="utility_ship" onGrass="false" on_air="true" underground="true" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underwater="true">
+      <action>
+        object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "p");
+        f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+      </action>
+      <equip eval="p" to="object" fromInventory="false" if="p != null" />
+    </action>
+    <action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" />
+    <food id="titanium" value="250" />
+  </item>
+
+  <recipe id="make_utility_ship" creates="utility_ship" type="advanced_lab" available="getFlag('make_utility_ship')">
+    <item id="titanium" count="10" />
+    <item id="ship_parts" count="5" />
+    <item id="advanced_tech" count="4" />
+  </recipe>
+  <recipe id="make_utility_ship_gun" creates="utility_ship_gun" type="advanced_lab" available="getFlag('make_utility_ship')">
+    <item id="advanced_tech" count="1" /><item id="jet_gun" count="1" />
+  </recipe>
+  <recipe id="make_utility_ship_laser" creates="utility_ship_laser" type="advanced_lab" available="getFlag('make_utility_ship')">
+    <item id="advanced_tech" count="2" /><item id="laser_gun" count="1" />
+  </recipe>
+</data>

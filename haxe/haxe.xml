@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <include id="xml_setup.xml"/>
+    <include id="xml_config.xml"/>
+    <!-- The configs for the asteroid field types are here -->
+    <!-- Most of this haxe is written by gASK-->
+    <action>
+        //generates the whole area
+        function generateAsteroidArea(areaRenderer){
+            player = getLocalPlayer();
+            player.setVar('asteroids_visited',player.getVar('asteroids_visited')+1);
+            area = areaRenderer.area;
+            setup = getData('asteroid_field', area.planet.xml.get('asteroid_field'));
+            if(setup == null){ trace('INVALID SETUP!'); return; }
+            biome = setup.getRandomBiome();
+            player.setString(area.id + "BiomeId", biome.id);
+            //trace('Asteroid Area with biome ' + biome.id + ' generated.');
+            generateAsteroids(area, biome);
+            spawnExotics(biome, area);
+            biome.onLoad(area, eval);
+            return;
+        }
+
+        function leaveAsteroidArea(leaveArea){
+          if(!leaveArea.hasPlayer()){
+            for(o in leaveArea.getAllObjects()) if(o.info == 'VehicleInfo') return;
+            player = getLocalPlayer();
+            biome = getData("biome", player.getString(leaveArea.id + "BiomeId"));
+            if(biome != null) biome.onLeave(leaveArea, eval);
+            player.areas.remove(leaveArea.id);
+            //trace('Asteroid Area with biome ' + biome.id + ' removed.');
+          }
+        }
+
+        //generates the area from the specified config
+        function generateAsteroids(area, config){
+            var xOffset = Std.random(15 * config.spacing);
+            while(area.getEndX() > xOffset) {
+                xOffset += generateSeedAsteroid(xOffset, area, config);
+            }
+        }
+
+        //generates each asteroid seed and places the asteroid
+        function generateSeedAsteroid(xOffset, area, config) {
+            var height = getAreaXML(area.id).get('height');
+            var ass = config.getRandomAsteroid();
+            if (ass == null) { return area.getEndX(); } // this is for no asteroids configs
+            var size = ass.getSize();
+            buildFromSeed(area, xOffset, Std.random(Math.max(height - 2 * size, 0)) + Math.min(size, height / 2), size, ass.tile, ass.ores == null ? config.ores : ass.ores, ass.shape, ass.enemies == null ? config.enemies : ass.enemies);
+            // this is finely tweaked math :P
+            return size * (1 + config.spacing / 2) + Std.random(size) * config.spacing;
+        }
+
+        // generates exotics
+        function spawnExotics(biome, area) {
+            for (biomeExo in biome.getExotics()) {
+                if (!evalIf(biomeExo)) { break; }
+                exop = 0;
+                exoPool = [];
+                for (exo in getDataByType("exotic")) {
+                    if (exo.types.indexOf(biomeExo.type) > -1 && exo.isEnabled()) { exop += exo.p; exoPool.push(exo); }
+                }
+                for(i in 1...biomeExo.max + 1) {
+                    if (i > biomeExo.min && random() >= biomeExo.percent) { continue; } // we did not get lucky on this exotic
+
+                    // generate a new one if we got lucky
+                    var exoType = Std.random(exop);
+                    for (exo in exoPool) {
+                        exoType -= exo.p;
+                        if (0 > exoType) {
+                            exo.spawn(area, eval);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        function buildFromSeed(area, X, Y, max_radius, tile, ores_prefilter, type, enemies_prefilter) {
+            ores = filterOres(ores_prefilter);
+            enemies = filterOres(enemies_prefilter);
+            toprocess = [{x: X, y: Y, dist: 0}];
+            done = [];
+            while(toprocess.length > 0) {
+                curTile = toprocess.shift();
+                if (done.indexOf(curTile.x + "x" + curTile.y) > -1 // skip already visited ones
+                    || shapeCheck(curTile, X, Y, max_radius, type)) { // stop by shape
+                    checkForHoles(area, curTile, tile, ores);
+                    continue;
+                }
+                done.push(curTile.x + "x" + curTile.y);
+                area.setTile(curTile.x, curTile.y, BASE_LAYER, area.addTileIndex(tile));
+                area.setLit(curTile.x,curTile.y);
+                setOres(area, curTile, ores);
+                setEnemies(area,curTile,enemies);
+                // now go in all directions and increase distance
+                toprocess.push({x: curTile.x + 1, y: curTile.y, dist: curTile.dist + 1});
+                toprocess.push({x: curTile.x - 1, y: curTile.y, dist: curTile.dist + 1});
+                toprocess.push({x: curTile.x, y: curTile.y + 1, dist: curTile.dist + 1});
+                toprocess.push({x: curTile.x, y: curTile.y - 1, dist: curTile.dist + 1});
+            }
+        }
+
+        function checkForHoles(area, curTile, tile, ores) {
+            if (area.getTile(curTile.x, curTile.y, BASE_LAYER) == null
+                && area.getTile(curTile.x + 1, curTile.y, BASE_LAYER) != null
+                && area.getTile(curTile.x - 1, curTile.y, BASE_LAYER) != null
+                && area.getTile(curTile.x, curTile.y + 1, BASE_LAYER) != null
+                && area.getTile(curTile.x, curTile.y - 1, BASE_LAYER) != null) {
+                    area.setTile(curTile.x, curTile.y, BASE_LAYER, area.addTileIndex(tile));
+                    area.setLit(curTile.x,curTile.y);
+                    setOres(area, curTile, ores);
+                }
+        }
+
+        function setOres(area, curTile, ores) {
+            for (ore in ores) {
+                if (ore.percent > random()) {
+                    area.setTile(curTile.x, curTile.y, ORE_LAYER, area.addTileIndex(ore.ore));
+                    return;
+                }
+            }
+        }
+        function setEnemies(area, curTile, enemies) {
+            for (enemy in enemies) {
+                if (enemy.percent > random()) {
+                    spawnObject(area, enemy.enemy, curTile.x, curTile.y, true);
+                    return;
+                }
+            }
+        }
+
+        function filterOres(ores) {
+            new_ores = [];
+            for (ore in ores) {
+                if (evalIf(ore)) { new_ores.push(ore); }
+            }
+            return new_ores;
+        }
+
+        function shapeCheck(curTile, X, Y, max_radius, type) {
+            stop = false;
+            switch type {
+                case 'jagged': {
+                        directDist = Math.sqrt(Math.pow(curTile.x - X, 2) + Math.pow(curTile.y - Y, 2));
+                        stop = ((curTile.dist - (directDist / 2)) / max_radius) > random();
+                    };
+                case 'strange': {
+                        stop = (curTile.dist / max_radius) > random();
+                    };
+                case 'perfect': {
+                        stop = Math.sqrt(Math.pow(curTile.x - X, 2) + Math.pow(curTile.y - Y, 2)) >= max_radius;
+                    };
+                case 'round': {
+                        stop = (Math.sqrt(Math.pow(curTile.x - X, 2) + Math.pow(curTile.y - Y, 2)) / max_radius) > random();
+                    };
+                case 'crescent': {
+                        stop = (Y != curTile.y || Math.abs(curTile.x - X) > max_radius) && (Y > curTile.y || (Math.sqrt(Math.pow(curTile.x - X, 2) + Math.pow(curTile.y - Y, 2)) / max_radius) > random());
+                    };
+            }
+
+            return stop;
+        }
+
+        function spawnPatternObject(area, object, radius, spacing, percent, x, y) {
+            spawnPatternObjects(area, [{object: object, p: 1}], radius, spacing, percent, x, y);
+        }
+
+        // spacing is in tiles
+        function spawnPatternObjects(area, objects, radius, spacing, percent, x, y) {
+            totalp = 0;
+            for (object in objects) { totalp += object.p; }
+            ix = -radius;
+            while (radius >= ix) {
+                iy = -radius;
+                while (radius >= iy) {
+                    if (radius >= Math.sqrt(Math.pow(ix, 2) + Math.pow(iy, 2)) && percent > random()) {
+                        var ex = x + ix + Std.random((spacing + 1) * 2 + 1) - spacing - 1;
+                        var ey = y + iy + Std.random((spacing + 1) * 2 + 1) - spacing - 1;
+                        spawnObject(area, pickObject(objects, Std.random(totalp)), ex, ey);
+                    }
+                    iy += spacing + 1;
+                }
+                ix += spacing + 1;
+            }
+        }
+
+        function pickObject(objects, p) {
+            for (object in objects) {
+                p -= object.p;
+                if (0 >= p) {
+                    return object.object;
+                }
+            }
+
+            return null;
+        }
+
+        function clearArea(area, sx, sy, ex, ey) {
+            toClear = [];
+            cleared = [];
+            for (ix in sx...ex + 1) {
+                for (iy in sy...ey + 1) {
+                    toClear.push({x : ix, y: iy});
+                }
+            }
+            while(toClear.length > 0) {
+                tc = toClear.shift();
+                tci = tc.x + "x" + tc.y;
+                if (cleared.indexOf(tci) > -1) { continue; }
+                cleared.push(tci);
+                if (!area.isEmptyTile(tc.x, tc.y)) {
+                    area.setTile(tc.x, tc.y, BASE_LAYER, -1);
+                    area.setTile(tc.x, tc.y, ORE_LAYER, -1);
+                    toClear.push({ x: tc.x+1, y: tc.y});
+                    toClear.push({ x: tc.x-1, y: tc.y});
+                    toClear.push({ x: tc.x, y: tc.y+1});
+                    toClear.push({ x: tc.x, y: tc.y-1});
+                }
+            }
+        }
+
+        function spawnObject(area, id, ?x, ?y, ?tile) {
+          var eObject = getObject(id);
+          if (eObject == null) { trace('Object with ID "' + id + '" not found!'); return; }
+          var ex = x == null ? Std.random(area.getEndX()) : x;
+          var ey = y == null ? Std.random(Std.random(getAreaXML(area.id).get('height') - 6) + 3) : y;
+          var etile = tile == null? false : tile;
+          eInstance = eObject.create((ex) * Tile.SIZE, (ey) * Tile.SIZE);
+          if (checkBounds(area, eInstance.getBounds(), etile)) {
+            area.addObject(eInstance);
+          }
+        }
+
+        function checkBounds(area, bounds, tile) {
+          var hasTile = false; var hasAir = false;
+            for (y in Math.floor(bounds.get_top() / Tile.SIZE)...Math.ceil(bounds.get_bottom() / Tile.SIZE)) {
+                for (x in Math.floor(bounds.get_left() / Tile.SIZE)...Math.ceil(bounds.get_right() / Tile.SIZE)) {
+                    if (!area.isEmptyTile(x,y)) hasTile = true;
+                    else hasAir = true;
+                }
+            }
+            //are there tiles, and Xor for only being air or tiles.
+            return hasTile == tile && hasTile ^ hasAir == 1;
+        }
+      </action>
+</data>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+  <name>Asteroids x Minigames</name>
+  <description>Two new space minigames</description>
+  <author>Airom</author>
+  <version>1.1.0</version>
+  <requires>Asteroids</requires>
+  <requires>Minigames</requires>
+  <init>
+    <minigame id="asteroid_pirates" area='asteroid_pirates.orbit' player="player.arcade" space="true" x="50" y="20">
+      <item id='return'/>
+      <hotkey item='return' to='0'/>
+      <action>
+        setGlobal('winCondition',"!area.hasObjectInLayer(ENEMY_LAYER)");
+       </action>
+    </minigame>
+
+    <asteroid_field id="asteroid_pirates_minigame">
+      <biome id="pirates_minigame" p="1"/>
+    </asteroid_field>
+
+    <biome id="pirates_minigame" spacing="2" extends="standard">
+      <ore id="coal" percent="0.035" />
+      <ore id="gold" percent="0.035" />
+      <ore id="titanium" percent="0.03" />
+      <ore id="uranium" percent="0.03" />
+      <ore id="magnegem" percent="0.01" />
+      <ore id="exotic_matter" percent="0.004" />
+      <onLoad>
+        <enemy id="enemy.utility_ship" count="15"/>
+      </onLoad>
+    </biome>
+
+    <planet id="asteroid_pirates_minigame" height="80" asteroid_field="asteroid_pirates_minigame">
+      <orbit id="asteroid_pirates.orbit" width="128" height="64" background="stars" name="system.planet.asteroids" type="none" hasEnemy="true">
+        <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
+        <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+      </orbit>
+    </planet>
+
+    <minigame id="asteroid_drones" area='asteroid_drones.orbit' player="player.arcade" space="true" x="50" y="20">
+      <item id='return'/>
+      <hotkey item='return' to='0'/>
+      <action>setGlobal('winCondition',"!area.hasObjectInLayer(ENEMY_LAYER)");</action>
+    </minigame>
+
+    <asteroid_field id="asteroid_drones_minigame">
+      <biome id="drones_minigame" p="1"/>
+    </asteroid_field>
+
+    <biome id="drones_minigame" spacing="1.75" extends="standard">
+      <ore id="coal" percent="0.035" />
+      <ore id="gold" percent="0.035" />
+      <ore id="titanium" percent="0.03" />
+      <ore id="uranium" percent="0.03" />
+      <ore id="magnegem" percent="0.01" />
+      <ore id="exotic_matter" percent="0.004" />
+      <onLoad>
+        <enemy id="time_drone_enemy" count="4" random="1" />
+        <enemy id="asteroid_miner_drone" count="4" random="1" />
+        <enemy id="asteroid_plant_drone" count="4" random="1" />
+        <enemy id="alien.asteroid_drone" count="4" random="1" />
+      </onLoad>
+    </biome>
+
+    <planet id="asteroid_drones_minigame" height="80" asteroid_field="asteroid_drones_minigame">
+      <orbit id="asteroid_drones.orbit" width="128" height="64" background="stars" name="system.planet.asteroids" type="none" hasEnemy="true">
+        <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
+        <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+      </orbit>
+    </planet>
+
+    <lang id='en_US'>
+      <section id='minigames'>
+        <text id='asteroid_pirates'>Pirates</text>
+        <text id='asteroid_drones'>Drones</text>
+      </section>
+      <section id='minigames.description'>
+        <text id='asteroid_pirates'>Hunt down the filthy pirates.</text>
+        <text id='asteroid_drones'>Smash tiny drones with your larger ship.</text>
+      </section>
+      <section id="minigames.condition">
+        <text id="asteroid_pirates">Destroy the pirate scum!</text>
+        <text id="asteroid_drones">Kill all the drones!</text>
+      </section>
+    </lang>
+  </init>
+</mod>

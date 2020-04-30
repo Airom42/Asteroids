@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+  <name>Asteroids</name>
+  <description>Greatly expands space exploration and resource collection.</description>
+  <author>Airom, gASK, and the UAMT</author>
+  <version>4.5.0</version>
+  <website>https://aground.mod.io/asteroid-field</website>
+  <requires>Full Version</requires>
+  <loadAfter>Drones</loadAfter>
+  <loadAfter>Minigames</loadAfter>
+  <init>
+    <music id="asteroids" /><!-- By Vortechnix -->
+    <music id="subterranean_oscillation" /><!-- By Airom -->
+    <include id="itemsAndVehicles/items.xml"/>
+    <include id="lang.xml"/>
+    <include id="enemies/enemies.xml"/>
+    <include id="structures/smastirini.xml"/>
+    <include id="structures/space_pirates.xml"/>
+    <include id="structures/space_miners.xml"/>
+    <include id="structures/solar_system.xml"/>
+    <include id="haxe/haxe.xml"/>
+
+    <tile id="asteroid" sheet="tiles.png" x="0" />
+    <dig id="asteroid" cost="4"/>
+
+    <tilesheet id="asteroids_nav.png" width="80" height="140"/>
+    <tile id="asteroids_nav" sheet="asteroids_nav.png" x="0"/>
+
+    <parallax id="stars.asteroids.orbit" mapBG="0" skyColor="0">
+      <layer p="0" glow="true" max_depth="10000"><tile sheet="{mod:full_version}/space/night_bg.png" x="0" y="0" /></layer>
+      <layer p="0" glow="true" max_depth="10000">
+        <tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+      </layer>
+      <layer type="back" />
+    </parallax>
+
+    <!-- Asteroid Fields -->
+    <!-- Planets do not need areas, they can be orbit only -->
+    <planet id="asteroids" height="80" asteroid_field="asteroids">
+      <orbit id="asteroids.orbit" width="320" height="64" background="stars.asteroids.orbit" name="system.planet.asteroids">
+        <init><runAreaLoad />
+          <action>generateAsteroidArea(this);</action>
+          <event canComplete="find_space_pirates" once="true">
+            <invokeLater>
+              <complete quest="find_space_pirates" />
+              <dialogue section="space_pirates" id="pirates4" speaker="player" />
+              <dialogue section="space_pirates" id="pirates5" speaker="player" />
+              <dialogue section="space_pirates" id="pirates6" />
+              <quest id="get_adv_tech"/>
+            </invokeLater>
+          </event>
+        </init>
+        <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+      </orbit>
+      <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
+    </planet>
+
+    <tilesheet id="asteroids_nav_sol.png" width="70" height="140"/>
+    <tile id="asteroids_nav_sol" sheet="asteroids_nav_sol.png" x="0"/>
+    <planet id="asteroids.solar_system" height="80" asteroid_field="solar_system_asteroids">
+      <orbit id="asteroids.solar_system.orbit" width="320" height="64" background="stars.asteroids.orbit" name="system.planet.asteroids" >
+        <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
+        <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+      </orbit>
+      <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
+    </planet>
+
+    <planet id="asteroids.hq_battlefield" height="80" asteroid_field="hq_battlefield">
+        <orbit id="asteroids.hq_battlefield.orbit" width="280" height="100" background="stars.asteroids.orbit" name="system.planet.hq_battlefield" >
+          <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
+          <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+        </orbit>
+        <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
+    </planet>
+
+    <!-- Extended systems MUST be loaded after the original system -->
+    <system id="start" extends="start">
+      <planet id="asteroids" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
+      <planet id="smastirini" tile="smastirini_nav" offsetX="140" offsetY="40" name="system.planet.smastirini" available="player.hasQuest('find_smastirini')"/>
+    </system>
+
+    <system id="sol" extends="sol">
+      <planet id="asteroids.solar_system" tile="asteroids_nav_sol" offsetX="100" name="system.planet.asteroids" />
+    </system>
+
+    <system id="alien_hq" extends="alien_hq">
+      <planet id="asteroids.hq_battlefield" tile="alien_locator" animation="alien_locator" offsetX="150" offsetY="75" name="system.planet.hq_battlefield" available="getFlag('colony_world')"/>
+    </system>
+
+    <!-- UAMT System Addon: The modular system created by the UAMT -->
+    <include id="addons/uamt_system.xml" child="init" />
+
+    <!--Drones: The mod made by Vortechnix and the UAMT -->
+    <section if="getMod('minigames') != null &&  getMod('drones').isEnabled()">
+      <include id="addons/space_drone.xml" child="init" />
+    </section>
+
+    <!--Minigames: A whole bunch of fun games by etrotta -->
+    <section id="getMod('minigames') != null && getMod('minigames').isEnabled()">
+      <include id="addons/minigames.xml" child="init" />
+    </section>
+  </init>
+</mod>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+  <name>Asteroids x Drones</name>
+  <description>Adds to repairs of the drone(s) and a new miniquest</description>
+  <author>Airom</author>
+  <version>2.1.0</version>
+  <requires>Asteroids</requires>
+  <requires>Drones</requires>
+  <init>
+    <quest id="kill_asteroid_drones" exp="500">
+      <kill id="asteroid_miner_drone" tile="CH_space_drone.ico" name="item.names.CH_space_drone" count="5" />
+    </quest>
+    <vehicle id="CH_space_drone" extends="CH_space_drone">
+      <repair id="advanced_tech" value="1000"/>
+    </vehicle>
+
+    <enemy id="asteroid_miner_drone" extends="asteroid_miner_drone">
+      <onDeath>
+        <section if="area.id != 'asteroid_drones.orbit'">
+          <section if="!player.hasQuest('kill_asteroid_drones')">
+            <dialogue section="drones" id="asteroid_drone_give" />
+            <quest id="kill_asteroid_drones"/>
+          </section>
+          <section if="player.canCompleteQuest('kill_asteroid_drones')">
+            <dialogue section="drones" id="asteroid_drone_complete" />
+            <complete quest="kill_asteroid_drones"/>
+            <action>player.addItem('advanced_tech',5)</action>
+          </section>
+        </section>
+      </onDeath>
+    </enemy>
+
+    <quest id="kill_time_drones" exp="500">
+      <kill id="time_drone_enemy" tile="VTX_time_drone.ico" name="item.names.VTX_time_drone" count="5" />
+    </quest>
+    <vehicle id="VTX_time_drone" extends="VTX_time_drone">
+      <repair id="advanced_tech" value="1000"/>
+    </vehicle>
+
+    <enemy id="time_drone_enemy" extends="time_drone_enemy">
+      <onDeath>
+        <section if="area.id != 'asteroid_drones.orbit'">
+          <section if="!player.hasQuest('kill_time_drones')">
+            <dialogue section="drones" id="time_drone_give" />
+            <quest id="kill_time_drones"/>
+          </section>
+          <section if="player.canCompleteQuest('kill_time_drones')">
+            <dialogue section="drones" id="time_drone_complete" />
+            <complete quest="kill_time_drones"/>
+            <item id="time_core"/>
+          </section>
+        </section>
+      </onDeath>
+    </enemy>
+
+    <lang id="en_US">
+      <section id="drones">
+        <text id="asteroid_drone_give">I wonder if I can extract the cores of these robots... Maybe if I kill a few of them I can get some!</text>
+        <text id="asteroid_drone_complete">I figured it out! If I can disable them without blowing them up, I can extract the core!</text>
+        <text id="time_drone_give">These enemies move so fast... I wonder if they have some sort of special core?</text>
+        <text id="time_drone_complete">They seem to contain a special [item=time_core]. I should take this back with me.</text>
+      </section>
+      <section id="quests">
+        <text id="kill_asteroid_drones">Kill Miner Drones</text>
+        <text id="kill_time_drones">Kill Time Drones</text>
+      </section>
+      <section id="quest.description">
+        <text id="kill_asteroid_drones">If I can kill some of these hostile drones, I might be able to extract their power cores!</text>
+        <text id="kill_time_drones">Kill Time Drones to investigate their core.</text>
+      </section>
+    </lang>
+  </init>
+</mod>

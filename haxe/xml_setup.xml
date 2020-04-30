@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <action>
+        function evalIf(ob) {
+            return ob.if == null || eval(ob.if);
+        }
+
+        function evalForce(biome) {
+            return biome.force != null && eval(biome.force);
+        }
+
+        function ifNull(item, value) {
+            return item == null ? value : item;
+        }
+
+        function getIf(xml) {
+            return ifNull(xml.get("enabled"), ifNull(xml.get("available"), xml.get("if")));
+        }
+
+        function runElements(eIt, area, evalOuter) {
+            for (e in eIt) {
+                switch e.nodeName {
+                    case "function":
+                        {
+                            func = getVars().get(e.get("id"));
+                            if (func == null) { trace("Function [" + e.get("id") + "] not found!"); break; }
+                            func(area);
+                        }
+                    case "action":
+                        {
+                            evalOuter(e.children[0].nodeValue);
+                        }
+                    case "asteroid":
+                        {
+                            ass = getData("asteroid", e.get("id"));
+                            if (ass != null) {
+                                for (i in 0...ifNull(Std.parseInt(e.get("count")), 1)) {
+                                    buildFromSeed(area, Std.random(area.getEndX()), Std.random(getAreaXML(area.id).get('height')), ass.getSize(), ass.tile, ifNull(ass.ores, []), ass.shape);
+                                }
+                            } else {
+                                trace("Asteroid with ID '" + e.get("id") + "' not found!");
+                            }
+                        }
+                    case "enemy": {
+                            cnt = ifNull(Std.parseInt(e.get("count")), 1);
+                            rnd = ifNull(Std.parseInt(e.get("random")), 0);
+                            cnt += Std.random(rnd * 2 + 1) - rnd;
+                            for (i in 0...cnt) {
+                                spawnObject(area, e.get("id"));
+                            }
+                        }
+                    case "object":
+                        {
+                            for (i in 0...ifNull(Std.parseInt(e.get("count")), 1)) {
+                                spawnObject(area, e.get("id"));
+                            }
+                        }
+                    case "spawner":
+                        {
+                            parseSpawner(e, area);
+                        }
+                    case "section":
+                        {
+                            iff = e.get("if");
+                            if (evalOuter(iff)) {
+                                runElements(e.elements(), area, evalOuter);
+                            }
+                        }
+                    case "setFlag":
+                        {
+                            getLocalPlayer().setFlag(e.get("id"), evalOuter(e.get("value")));
+                        }
+                    case "procedure":
+                        {
+                            runProcedure(e.get("id"));
+                        }
+                }
+            }
+        }
+
+        function parseSpawner(spawner, area) {
+            radius = ifNull(Std.parseInt(spawner.get("radius")), 0);
+            step = ifNull(Std.parseInt(spawner.get("step")), 0);
+            percent = ifNull(Std.parseFloat(spawner.get("percent")), 1);
+            objects = [];
+            for (i in spawner.elements()) {
+                objects.push({ object: i.get("id"), p: ifNull(Std.parseInt(i.get("p")), 0) });
+            }
+            ex = ifNull(Std.parseInt(spawner.get("x")), Std.random(area.getEndX()));
+            ey = ifNull(Std.parseInt(spawner.get("y")), Std.random(getAreaXML(area.id).get('height') - (radius * 2)) + radius);
+            spawnPatternObjects(area, objects, radius, step, percent, ex, ey);
+        }
+    </action>
+
+    <data type="exotic">
+        this.id = this.xml.get('id');
+        this.if = getIf(this.xml);
+        this.p = ifNull(Std.parseInt(this.xml.get('p')), 0);
+        this.types = [];
+        if (this.xml.get('type') != null) { this.types.push(this.xml.get("type")); }
+        for (type in this.xml.elementsNamed("type")) {
+            this.types.push(type.get("id"));
+        }
+        this.spawn = function(area, evalOuter) {
+            runElements(this.xml.xml.elements(), area, evalOuter);
+        }
+        this.isEnabled = function() {
+            return this.if == null || eval(this.if);
+        }
+    </data>
+
+    <data type="asteroid_field">
+        this.id = this.xml.get('id');
+
+        this.getRandomBiome = function() {
+            this._load();
+
+            totalp = 0;
+            for (biome in this._biomes) {
+                if (biome.biome.isEnabled() && evalIf(biome)) {
+                    if (evalForce(biome)) { return biome.biome; }
+                    totalp += biome.p;
+                }
+            }
+
+            p = Std.random(totalp);
+            for (biome in this._biomes) {
+                if (biome.biome.isEnabled() && evalIf(biome)) {
+                    p -= biome.p;
+                    if (0 > p) {
+                        return biome.biome;
+                    }
+                }
+            }
+            return null;
+        };
+
+        this._load = function() {
+            if (this._biomes == null) {
+                this._biomes = [];
+                for (biome in this.xml.elementsNamed('biome')) {
+                    bData = getData('biome', biome.get('id'));
+                    if (bData != null) {
+                        bP = ifNull(Std.parseInt(biome.get('p')), 0);
+                        this._biomes.push({ biome: bData, p: bP, if: getIf(biome), force: biome.get('force') });
+                    } else {
+                        trace('[Biome] with id "' + biome.get('id') + '" not found!');
+                    }
+                }
+            }
+        };
+    </data>
+
+    <data type="asteroid">
+        this.id = this.xml.get('id');
+        this.if = getIf(this.xml);
+        this._size = ifNull(Std.parseInt(this.xml.get('size')), 10); // 10 is deafult to prevent issues with generation
+        this._size_var = ifNull(Std.parseInt(this.xml.get('size_var')), 0);
+        this.tile = this.xml.get('tile');
+        this.shape = ifNull(this.xml.get('shape'), 'round');
+        this.getTile = function() { return getTile(this.tile); }
+        for (ore in this.xml.elementsNamed('ore')) {
+            if (this.ores == null) { this.ores = []; }
+            this.ores.push({ ore: ore.get('id'), percent: Std.parseFloat(ore.get('percent')), if: getIf(ore) });
+        };
+        for (enemy in this.xml.elementsNamed('enemy')) {
+            if (this.enemies == null) { this.enemies = []; }
+            this.enemies.push({ enemy: enemy.get('id'), percent: Std.parseFloat(enemy.get('percent')), if: getIf(enemy) });
+        };
+        this.getSize = function() {
+            var mod = Std.random((this._size_var + 1) * 2 + 1);
+            return this._size + mod - this._size_var - 1;
+        }
+        this.isEnabled = function() {
+            return this.if == null || eval(this.if);
+        };
+    </data>
+
+    <data type="biome">
+        this.id = this.xml.get('id');
+        this.if = getIf(this.xml);
+        this.spacing = ifNull(Std.parseFloat(this.xml.get('spacing')), 1);
+        this.ores = [];
+        for (ore in this.xml.elementsNamed('ore')) {
+            this.ores.push({ ore: ore.get('id'), percent: Std.parseFloat(ore.get('percent')), if: getIf(ore) });
+        }
+        for (enemy in this.xml.elementsNamed('enemy')) {
+            if (this.enemies == null) { this.enemies = []; }
+            this.enemies.push({ enemy: enemy.get('id'), percent: Std.parseFloat(enemy.get('percent')), if: getIf(enemy) });
+        };
+        this.getRandomAsteroid = function() {
+            this._load();
+
+            totalp = 0;
+            for (ass in this._asteroids) {
+                if (ass.asteroid.isEnabled() && evalIf(ass)) { totalp += ass.p; }
+            }
+
+            p = Std.random(totalp);
+            for (ass in this._asteroids) {
+                if(ass.asteroid.isEnabled() && evalIf(ass)) {
+                    p -= ass.p;
+                    if (0 > p) {
+                        return ass.asteroid;
+                    }
+                }
+            }
+            return null;
+        };
+
+        this.getExotics = function() {
+            this._load();
+            return this._exotics;
+        }
+
+        this._load = function() {
+            if (this._asteroids == null) {
+                this._asteroids = [];
+                for (asteroid in this.xml.elementsNamed('asteroid')) {
+                    aData = getData('asteroid', asteroid.get('id'));
+                    if (aData != null) {
+                        aP = ifNull(Std.parseInt(asteroid.get('p')), 0);
+                        this._asteroids.push({ asteroid: aData, p: aP, if: getIf(asteroid)  });
+                    } else {
+                        trace('[Asteroid] with id "' + asteroid.get('id') + '" not found!');
+                    }
+                }
+            }
+
+            if (this._exotics == null) {
+                this._exotics = [];
+                for (exotic in this.xml.elementsNamed('exotic')) {
+                    this._exotics.push({
+                        type: exotic.get("type"),
+                        percent: ifNull(Std.parseFloat(exotic.get("percent")), 0),
+                        min: ifNull(Std.parseInt(exotic.get("min")), 0),
+                        max: ifNull(Std.parseInt(exotic.get("max")), 0),
+                        if: getIf(exotic)});
+                }
+            }
+        };
+
+        this.onLoad = function(area, evalOuter) {
+            for(onLoad in this.xml.elementsNamed("onLoad")) {
+                runElements(onLoad.elements(), area, evalOuter);
+            }
+        };
+
+        this.onLeave = function(area, evalOuter) {
+          for(onLeave in this.xml.elementsNamed("onLeave")) {
+              runElements(onLeave.elements(), area, evalOuter);
+          }
+        }
+
+        this.isEnabled = function() {
+            return this.if == null || eval(this.if);
+        };
+    </data>
+
+
+</data>

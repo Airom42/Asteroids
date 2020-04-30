@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <!-- DRONES -->
+    <include id="asteroid_drones.xml"/>
+    <!-- Space Drone Enemy -->
+    <tile id="asteroid_miner_drone" sheet="asteroid_drones.1" offsetY="-6"/>
+    <animation id="asteroid_miner_drone.fire" x="0" count="4"/>
+    <animation id="asteroid_miner_drone.idle" x="4" count="4"/>
+    <animation id="asteroid_miner_drone.walk" x="4" count="4"/>
+    <animation id="asteroid_miner_drone.mine" x="8" count="4"/>
+
+    <enemy id="asteroid_miner_drone" tile="asteroid_miner_drone" health="100" defense="10" type="surface" passEnemies="true" range="40" speed="3" vertical="true" flying="true" death_sfx="explosion">
+      <loot id="titanium" p="2" /><loot id="advanced_tech" p="1" />
+      <attack type="projectile" animation="fire" damage="15" range="15" cost="0" cooldown="5">
+        <projectile tile="spirit_bolt" animation="spirit_bolt" speed="4" offsetY="4" fire_sfx="laser" color="ff3d00" colorScale="2">
+          <light tile="light.small" color="ff3d00" />
+        </projectile>
+      </attack>
+    </enemy>
+
+    <!-- Plant Drone Enemy -->
+    <tile id="asteroid_plant_drone" sheet="asteroid_drones.2"/>
+    <animation id="asteroid_plant_drone.fire" x="0" count="4"/>
+    <animation id="asteroid_plant_drone.idle" x="4" count="4"/>
+    <animation id="asteroid_plant_drone.walk" x="4" count="4"/>
+    <animation id="asteroid_plant_drone.mine" x="8" count="4"/>
+    <enemy id="asteroid_plant_drone" tile="asteroid_plant_drone" health="100" defense="5" type="surface" passEnemies="true" range="40" speed="4" vertical="true" flying="true" death_sfx="explosion">
+        <loot id="plant_eye" p="1" /><loot id="advanced_tech" p="1" />
+        <attack type="projectile" animation="fire" damage="10" hpSteal="10" range="15" cost="0" cooldown="5">
+          <projectile tile="spirit_bolt" animation="spirit_bolt" speed="4" offsetY="10" fire_sfx="laser" color="25d700" colorScale="2">
+            <light tile="light.small" color="25d700" />
+          </projectile>
+        </attack>
+    </enemy>
+
+    <!-- Time drone enemy -->
+    <tile id="time_drone_enemy" sheet="asteroid_drones.3"/>
+
+    <animation id="time_drone_enemy.fire" x="5" count="5" length=".3"/>
+    <animation id="time_drone_enemy.idle" x="0" count="5"/>
+    <animation id="time_drone_enemy.walk" x="0" count="5"/>
+    <enemy id="time_drone_enemy" tile="time_drone_enemy" health="100" defense="5" type="surface" passEnemies="true" range="50" speed="12" vertical="true" flying="true" death_sfx="explosion">
+        <loot id="exotic_matter" p="1" /><loot id="advanced_tech" p="4" />
+        <attack type="projectile" animation="fire" damage="9" range="20" cost="0" >
+          <projectile tile="spirit_bolt" animation="spirit_bolt" speed="4" offsetY="-3" fire_sfx="laser" color="ffcf00" colorScale="2">
+            <light tile="light.small" color="ffcf00" />
+          </projectile>
+        </attack>
+    </enemy>
+
+    <!-- Dragon drone enemy -->
+    <tile id="alien.asteroid_drone" sheet="asteroid_drones.4"/>
+
+    <animation id="alien.asteroid_drone.fire" x="0" count="4"/>
+    <animation id="alien.asteroid_drone.idle" x="0" count="4"/>
+    <animation id="alien.asteroid_drone.walk" x="0" count="4"/>
+    <enemy id="alien.asteroid_drone" tile="alien.asteroid_drone" health="200" defense="10" type="surface" passEnemies="true" range="50" speed="4" vertical="true" flying="true" death_sfx="explosion">
+        <loot id="exotic_matter" p="1" /><loot id="evo_shard" p="4" />
+        <attack type="projectile" animation="fire" damage="20" range="20" cost="0" cooldown="5">
+          <projectile tile="spirit_bolt" animation="spirit_bolt" speed="4" offsetY="-1" fire_sfx="laser" color="b500ff" colorScale="2">
+            <light tile="light.small" color="b500ff" />
+          </projectile>
+        </attack>
+    </enemy>
+
+    <!-- Space Pirate Ship -->
+    <animation id="enemy.utility_ship.fire" x="0" count="1">
+      <append tile="utility_ship_laser" animation="equipment.utility_ship_laser"/>
+    </animation>
+    <animation id="enemy.utility_ship.idle" x="0" count="1"/>
+    <animation id="enemy.utility_ship.walk" x="0" count="1">
+        <append tile="utility_ship" animation="utility_ship.antigrav" />
+        <append tile="utility_ship" animation="utility_ship.impulse" />
+    </animation>
+
+    <enemy id="enemy.utility_ship" tile="utility_ship" health="150" defense="8" color="B55218" colorScale="1.6" type="surface" range="32" speed="5" vertical="true" flying="true" passEnemies="true" death_sfx="explosion">
+        <loot id="titanium" p="3" /><loot id="exotic_matter" p="1" /><loot id="advanced_tech" p="1" />
+        <attack type="projectile" animation="fire" damage="20" range="15" cost="0" cooldown="25">
+          <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
+            <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+          </projectile>
+        </attack>
+    </enemy>
+
+
+    <!-- Space Wyrms -->
+    <include id="space_wyrm_queen.xml" includeRoot="true"/>
+    <tile id="space_wyrm_queen" sheet="space_wyrm_queen.png" x="0" />
+    <animation id="wyrm_queen.pre_attack" x="9" count="5" length="1.5"/>
+    <animation id="wyrm_queen.post_attack" x="9" count="4" reverse="true"/>
+
+    <enemy id="space_wyrm_queen" tile="space_wyrm_queen" animation="wyrm_queen" health="1000" range="32" defense="200" type="surface" speed="1.5" passEnemies="true" vertical="true" flying="true" blood="magic.explosion.med" hitColor="ff6666" death_sfx="wyrm_queen_death">
+      <lootSet><loot id="dragonblood" count="10" /></lootSet>
+      <lootSet><loot id="spirit_gem" count="5"/></lootSet>
+      <lootSet><loot id="evo_gem"/></lootSet>
+      <idle>
+        <section if="area.getLiveCount('space_wyrm_attack')<20">
+          <sound id="wyrmqueen_spawn" /><play object="this" animation="spawn_begin" /><action>this.setVulnerable(25,200);</action>
+          <play object="this" animation="spawn_pre" /><set id="dx" value="this.getDX()" />
+          <object id="space_wyrm_attack" x="dx == -1?this.tile_x+1:this.tile_right-1" y="this.tile_y-2">
+            this.renderer.setTile(this.tile_x+dx, this.tile_y, this.renderer.speed);
+          </object>
+          <play object="this" animation="spawn_post" /><action>this.endVulnerable();</action>
+        </section>
+        <action>this.run();</action><stop />
+      </idle>
+      <attack type="melee" damage="20" animation="post_attack" sfx="wyrm_attack">
+        <pre><play object="this" animation="pre_attack" /></pre>
+      </attack>
+      <hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+    </enemy>
+
+    <enemy id="space_wyrm_miner" extends="magnewyrm" eatTile="asteroid"/>
+    <tilesheet id="space_wyrm_attack.png" width="17" height="30"/>
+    <tile id="space_wyrm_attack" sheet="space_wyrm_attack.png" x="0" />
+    <enemy id="space_wyrm_attack" tile="space_wyrm_attack" animation="wyrm" health="25" defense="7" damage="20" range="16" type="surface" flying="true" vertical="true" eatTile="asteroid" attack_sfx="wyrm_attack" passEnemies="true">
+      <loot id="dragonblood" count="2"/><sound id="death" value="wyrm_death" />
+    </enemy>
+</data>

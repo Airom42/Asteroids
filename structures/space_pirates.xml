@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <structure id="pirate_base" width="125" height="71" image="pirate_base.png"/>
+  <structure id="loot_pirate_base" extends="pirate_base" name="search" >
+    <operate>
+      <section if="!getFlag('make_utility_ship')">
+          <dialogue section="space_pirates" id="get_utility_ship" speaker="player" />
+          <action>setFlag('make_utility_ship', true)</action>
+      </section>
+      <action>
+        replaceStructure(this,'pirate_base');
+        player.addMultipleItems('advanced_tech', 3, 'titanium', Std.random(15));
+      </action>
+    </operate>
+  </structure>
+  <structure id="destroyed_pirate_base" width="125" height="70" image="destroyed_pirate_base.png"/>
+  <structure id="loot_destroyed_pirate_base" extends="destroyed_pirate_base" name="search">
+      <operate>
+        <action>
+          replaceStructure(this,'destroyed_pirate_base');
+          player.addMultipleItems('advanced_tech', 2, 'ship_parts', Std.random(5), 'titanium', Std.random(10));
+        </action>
+      </operate>
+  </structure>
+  <quest id="find_space_pirates" exp="1000" giver="mechanic">
+    <kill id="enemy.utility_ship" count="5"/>
+  </quest>
+  <quest id="get_adv_tech" exp="500" giver="mechanic">
+    <item id="advanced_tech" count="1"/>
+  </quest>
+
+  <npc id="mechanic" extends="mechanic">
+    <operate>
+      <section if="getLocalPlayer().getVar('asteroids_visited') > 0 && !player.hasQuest('find_space_pirates')">
+        <dialogue section="space_pirates" id="pirates1" speaker="this" />
+        <dialogue section="space_pirates" id="pirates2" speaker="this" />
+        <dialogue section="space_pirates" id="pirates3" speaker="this" />
+        <quest id="find_space_pirates"/>
+      </section>
+      <section if="player.canCompleteQuest('find_space_pirates')">
+        <complete quest="find_space_pirates" />
+        <dialogue section="space_pirates" id="pirates5" speaker="player" />
+        <dialogue section="space_pirates" id="pirates6" speaker="this" />
+        <quest id="get_adv_tech"/>
+      </section>
+      <section if="player.canCompleteQuest('get_adv_tech')">
+        <dialogue section="space_pirates" id="pirates7" speaker="player" />
+        <dialogue section="space_pirates" id="pirates8" speaker="this"/>
+        <dialogue section="space_pirates" id="explore_more" speaker="this"/>
+        <complete quest="get_adv_tech"/>
+      </section>
+    </operate>
+  </npc>
+</data>

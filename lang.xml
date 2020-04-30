@@ -1,0 +1,115 @@
+<data>
+  <lang id="en_US">
+    <section id="common">
+      <text id="looted">I've already looted this!</text>
+      <text id="mine_lab">Miner's Lab</text>
+      <text id="mine_silo">Silo</text>
+    </section>
+    <section id="system.planet">
+      <text id="asteroids">Asteroid Field</text>
+      <text id="smastirini">ESA-Smastirini</text>
+      <text id="hq_battlefield">Fleet Battle</text>
+    </section>
+    <section id="system.planet.desc">
+      <text id="asteroids">Due to it's ever shifting nature, this unrealisticaly packed asteroid field is never the same twice!</text>
+      <text id="uamt.asteroids">Due to it's ever shifting nature, this unrealisticaly packed asteroid field is never the same twice!</text>
+      <text id="smastirini">There is a [color=ff2222]Distress Beacon[/color] coming from here!</text>
+      <text id="asteroids.solar_system">Once a great mining location, now full of debris.</text>
+      <text id="asteroids.hq_battlefield">Help the Colony fight off the aliens.</text>
+    </section>
+    <section id="item.names">
+      <text id="utility_ship">Utility Ship</text>
+      <text id="utility_ship_gun">Utility Ship Gun</text>
+      <text id="utility_ship_laser">Utility Ship Laser</text>
+      <text id="utility_droid">Utility Droid</text>
+      <text id="advanced_tech">Advanced Tech</text>
+      <text id="fighter.bomb">Bomb Launcher</text>
+      <text id="fighter.beam">Plasma Beam</text>
+      <text id="fighter.mine">Mining Beam</text>
+      <text id="antimatter_bomb">Antimatter Bomb</text>
+      <text id="matter_bomb">Fighter Bomb</text>
+    </section>
+    <section id="item.descriptions">
+      <text id="utility_ship">An ATV with heavy shields and spaceflight capability!</text>
+      <text id="utility_droid">All-purpose combat droid.</text>
+      <text id="advanced_tech">Pieces of highly advanced tech.</text>
+      <text id="fighter.mine">[tile=power]Power per Item: 100 \n Mines and collects Items.</text>
+    </section>
+    <section id="npc">
+      <text id="space_miner">Space Miner</text>
+      <text id="space_miner_captain">Space Miner Captain</text>
+    </section>
+    <section id="structure.tooltip">
+      <text id="mine_lab">Craft in Miner's Lab</text>
+      <text id="mine_silo">Enter Silo</text>
+    </section>
+    <section id="quests">
+      <text id="find_smastirini">Distress Signal</text>
+      <text id="find_space_pirates">Find Pirates</text>
+      <text id="get_adv_tech">Advanced Tech</text>
+      <text id="space_miners">Find Materials</text>
+      <text id="mine_beam">New Tech</text>
+    </section>
+    <section id="quest.description">
+      <text id="find_smastirini">Investigate the distress signal.</text>
+      <text id="find_space_pirates">wants you to find Space Pirates.</text>
+      <text id="get_adv_tech">requests some materials for new technology.</text>
+      <text id="space_miners">needs weapon materials.</text>
+      <text id="mine_beam">needs materials for new mining tech.</text>
+    </section>
+    <section id="empty_space">
+      <text id="first_visit">This is weird. There is a completely empty patch of space in the middle of the field...</text>
+      <text id="first_visit2">Something feels off, but I can't put my finger on it.</text>
+      <text id="next_visit">This empty space again, taunting me...</text>
+    </section>
+    <section id="awreck_logs">
+      <text id="distress">I'm picking up a distress signal from this area! I must investigate!</text>
+      <text id="awreck_log1">We c..me here to ..est these new drones. They we..e said t.. be fai..proof.</text>
+      <text id="awreck_log2">They se..med to work. But th..n... They turn..d on us.</text>
+      <text id="awreck_log3">We don'.. know f..om w...re. But they came. An.. th... de...r..yed us. We h.... n.. ch...</text>
+      <text id="awreck_read">I've already read this. I know how it ends...</text>
+      <text id="smastirini1">The rest of this log is too corrupted to read. I wonder if those droids are still around...</text>
+      <text id="smastirini2">These logs suggest this ship was part of a larger mission...</text>
+      <text id="smastirini3">I am picking up a distress signal! I wonder if there might still be survivors...</text>
+      <text id="smastirini4">No signs of life... This signal must have been sent long ago...</text>
+      <text id="smastirini5">These are the logs of the Research Vessel the ESA-Smastirini. Our mission was simple: test some drones, return home to Earth.</text>
+      <text id="smastirini6">At first, all seemed well. But when we disengaged our FTL engines, we knew we were in the wrong place. Something... something had altered our path.</text>
+      <text id="smastirini7">We began to fear... but nothing seemed out of the ordinary. We started testing our drones... and then it all went wrong.</text>
+      <text id="smastirini8">On day 3, the first ship disappeared. One second it was there, the next it was gone. Someone gave Them a name... the nameless force opposing us.</text>
+      <text id="smastirini9">On day 8, we had harvested enough Exotic Matter for the FTL jump back. But when we engaed the engines, nothing happened. And then all went to hell.</text>
+      <text id="smastirini10">The drones turned on us. They destroyed us. Some of our ships may have been able to get away, but I find that possibility unlikely...</text>
+      <text id="smastirini11">I can hear them coming now... Goodbye... I hope this log serves as warning to any who may come after...</text>
+      <text id="ambush1">These people have been long dead... so who sent the signal?</text>
+      <text id="ambush2">It was a trap! The signal was a fake! I must get out of here!</text>
+      <text id="give_utility_droid">It seems this ship specialized in drones. Most of the data is corrupted but I can still extract the plans for an [item=utility_droid]!</text>
+      <text id="loot_jumpship">I was able to scavenge a jumpship from the debris.</text>
+      <text id="repair_smastirini">The ship has been destroyed beyond repair.</text>
+    </section>
+    <section id="space_pirates">
+      <text id="get_utility_ship">I was able to extract the plans for the pirate's ships! I should be able to make my own now!</text>
+      <text id="pirates1">I see you found an [color=770000]Asteroid Field[/color]! I have checked your ship's scanners and they are picking up activity in the area.</text>
+      <text id="pirates2">I have reason to suspect it is pirates. Let me just run some tests... [pause=1]Aha! I have locked onto a signal from the pirates' base!</text>
+      <text id="pirates3">If you can go and eradicate them, I might be able to make something out of their tech!</text>
+      <text id="pirates4">I have killed the pirates the [object=mechanic] asked for... I'll call her on the [item=com_device].</text>
+      <text id="pirates5">Cass? I killed the pirates you asked.</text>
+      <text id="pirates6">Great! Can you search their base for some [item=advanced_tech] and bring it to me?</text>
+      <text id="pirates7">Here's the tech you wanted.</text>
+      <text id="pirates8">Awesome! I can make so much new tech with this! Go check out the new recipes in the [color=770000]Advanced Lab[/color]!</text>
+      <text id="explore_more">I would recommend going back to the [color=770000]Asteroid Field[/color] and seeing if you can find anything else!</text>
+    </section>
+    <section id="space_miners">
+      <text id="no_entry">Hey! Get out of there!</text>
+      <text id="gather_stuff1">Hello there Traveler! Could you spare some time to help us?</text>
+      <text id="gather_stuff2">The pirates in the vicinity keep attacking our operations. We require some materials to repair our defense systems.</text>
+      <text id="gather_stuff3">If you could obtain some of the pirate's tech, we might be able to fight them off.</text>
+      <text id="gather_stuff4">Amazing! I will use this to craft some new tech in our [color=770000]Lab[/color]! Feel free to use our facilities as you please!</text>
+      <text id="mine_beam1">We have been developing a new laser beam, but it requires large amounts of [item=magnegem]s to complete. Could you get some?</text>
+      <text id="mine_beam2">This is exactly what we need! Feel free to craft a [item=fighter.mine] in the [color=770000]Lab[/color]!</text>
+      <text id="thanks">Thank you for all your help, traveller! Feel free to borrow any resources you need!</text>
+      <text id="destroyed">The pirates must have destroyed this base... I'll see what I can salvage from the poor miners...</text>
+      <text id="com_device">You can call us on your [item=com_device] to find your way back here if needed.</text>
+      <text id="call1">Greetings Traveler! I am transmitting our location now...</text>
+      <text id="call2">...[pause=10] Location transmitted! We await your return!</text>
+    </section>
+  </lang>
+</data>

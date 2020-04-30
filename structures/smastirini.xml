@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <!-- SUBVERSION 2.0.0 -->
+  <quest id="find_smastirini" exp="500">
+    <area id="smastirini_interior" count="1" />
+  </quest>
+
+  <!-- The Research Vessel Smastirini -->
+  <tilesheet id="smastirini_crack.png" width="86" height="60" />
+  <tile id="smastirini_crack" sheet="smastirini_crack.png" x="0" y="0" />
+  <!-- <structure id="smastirini_crack" tile="smastirini_crack" name="enter" type="door" fullHeight="true"/> -->
+  <structure id="smastirini_crack" tile="crashed_ship.crack1" name="enter" type="door" fullHeight="true"/>
+  <animation id="smastirini_logs.idle" equals="medicom.idle" />
+  <structure id="smastirini_logs" extends="medicom">
+      <operate>
+        <section if="player.questComplete('find_smastirini')">
+          <dialogue section="awreck_logs" id="awreck_read" speaker="player" />
+        </section>
+        <section if="!player.questComplete('find_smastirini')">
+          <dialogue section="awreck_logs" id="smastirini5" />
+          <dialogue section="awreck_logs" id="smastirini6" />
+          <dialogue section="awreck_logs" id="smastirini7" />
+          <dialogue section="awreck_logs" id="smastirini8" />
+          <dialogue section="awreck_logs" id="smastirini9" />
+          <dialogue section="awreck_logs" id="smastirini10" />
+          <dialogue section="awreck_logs" id="smastirini11" />
+          <complete quest="find_smastirini"/>
+          <dialogue section="awreck_logs" id="ambush1" speaker="player" />
+          <dialogue section="awreck_logs" id="ambush2" speaker="player" />
+          <action>
+            spawnPatternObject(getArea('smastirini.orbit'), "asteroid_miner_drone", 15, 3, 0.2, 32, 16);
+            spawnPatternObject(getArea('smastirini.orbit'), "asteroid_miner_drone", 15, 3, 0.2, 75, 50);
+            spawnPatternObject(getArea('smastirini.orbit'), "asteroid_miner_drone", 15, 3, 0.2, 175, 40);
+            spawnPatternObject(getArea('smastirini.orbit'), "asteroid_miner_drone", 15, 3, 0.4, 111, 28);
+          </action>
+        </section>
+      </operate>
+  </structure>
+  <animation id="utility_droid_logs.idle" equals="medicom.idle" />
+  <structure id="utility_droid_logs" extends="medicom">
+      <operate>
+          <dialogue section="awreck_logs" id="give_utility_droid" speaker="player" />
+          <action>setFlag('make_utility_droid', true)</action>
+      </operate>
+  </structure>
+
+  <structure id="smastirini" extends="crashed_ship">
+    <tooltip section="actions" id="repair" if="player.hasQuest('colony_ship')" />
+    <operate><dialogue section="awreck_logs" id="repair_smastirini"/><stop/></operate>
+  </structure>
+
+  <planet id="smastirini" height="80">
+    <orbit id="smastirini.orbit" width="256" height="64" background="stars.asteroids.orbit">
+      <init><runAreaLoad /><action>
+        spawnPatternObjects(area, largeDebris , 25, 2, 0.3, 112, 30);
+        area.addStructure(getSmastiriniDoor(111,28));
+      </action></init>
+      <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+      <structure id="smastirini" x="100" y="40"/>
+      <structure id="loot_destroyed_fighter" x="32" y="16"/>
+      <structure id="loot_destroyed_fighter" x="75" y="50"/>
+      <structure id="loot_destroyed_fighter" x="175" y="40"/>
+    </orbit>
+  </planet>
+
+  <area id="smastirini_interior" name="smastirini" width="32" height="25" hasO2="false" background="destroyed_fighter_interior">
+    <tiles id="desert.scorched" start="0" end="1" /><mine start="0" end="1" /><tiles id="empty" start="0" end="1" />
+    <init><runAreaLoad /></init><onLoad><music id="subterranean_oscillation" seconds="1" /></onLoad>
+    <action>
+      for(x in 20...24) mine(x, 10); mine(23,12); for(y in 12...14) for(x in 17...23) mine(x, y);
+      mine(16, 13); for(x in 16...22) mine(x, 14); for(x in 16...22) mine(x, 15); for(x in 17...21) mine(x, 16);
+    </action>
+    <structure id="science1.bridge" x="10" y="18" />
+    <structure id="smastirini_crack" x="17" y="18" />
+    <structure id="smastirini_logs" x="16" y="14" />
+    <structure id="utility_droid_logs" x="17" y="12" />
+    <object id="ship_chest" x="23" y="12">
+      this.inventory.addItems(Item.get("power_core"), 1);
+      this.inventory.addItems(Item.get("exotic_matter"), 1);
+      this.inventory.addItems(Item.get("ship_parts"), 5);
+      this.inventory.addItems(Item.get("titanium"), 20);
+    </object>
+  </area>
+
+  <!-- The fighter escort Smastirini-12 -->
+  <structure id="destroyed_fighter" width="174" height="110" image="destroyed_fighter.png" priority="-2" behind="true" remove="false" />
+  <structure id="destroyed_fighter_interior" extends="destroyed_fighter" image="destroyed_fighter_interior.png"/>
+  <structure id="loot_destroyed_fighter" extends="destroyed_fighter" name="search">
+      <operate>
+        <dialogue section="awreck_logs" id="loot_jumpship" speaker="player"/>
+        <action>
+          player.addMultipleItems("jumpship", 1, "ship_parts", 2, 'titanium', 5);
+          replaceStructure(this,'destroyed_fighter');
+        </action>
+      </operate>
+  </structure>
+
+  <tilesheet id="fighter_crack.png" width="30" height="33" />
+  <tile id="fighter_crack" sheet="fighter_crack.png" x="0" y="0" />
+  <structure id="fighter_crack" tile="fighter_crack" name="enter" type="door"/>
+  <animation id="asteroid_logs.idle" equals="medicom.idle" />
+  <structure id="asteroid_logs" extends="medicom">
+      <operate>
+        <section if="player.hasQuest('find_smastirini')">
+          <dialogue section="awreck_logs" id="awreck_read" speaker="player" />
+        </section>
+        <section if="!player.hasQuest('find_smastirini')">
+          <dialogue section="awreck_logs" id="awreck_log1" />
+          <dialogue section="awreck_logs" id="awreck_log2" />
+          <dialogue section="awreck_logs" id="awreck_log3" />
+          <dialogue section="awreck_logs" id="smastirini1" speaker="player" />
+          <dialogue section="awreck_logs" id="smastirini2" speaker="player" />
+          <dialogue section="awreck_logs" id="smastirini3" speaker="player" />
+          <quest id="find_smastirini"/>
+        </section>
+      </operate>
+  </structure>
+
+  <parallax id="destroyed_fighter_interior" mapBG="0" skyColor="0">
+    <layer p="0" glow="true" max_depth="10000"><tile sheet="{mod:full_version}/space/night_bg.png" x="0" y="0" /></layer>
+  </parallax>
+
+  <area id="destroyed_fighter.interior" width="32" height="32" hasO2="false" background="destroyed_fighter_interior">
+    <tiles id="empty" start="0" end="1" /><init><runAreaLoad /></init><onLoad><music id="subterranean_oscillation" seconds="1" /></onLoad>
+    <action>
+      for(x in 11...16){
+        mine(x,9);
+      }
+      mine(15,8);
+      for(x in 13...16){
+        mine(x,7);
+      }
+    </action>
+    <structure id="destroyed_fighter_interior" x="8" y="11.7" />
+    <structure id="asteroid_logs" x="13.5" y="7"/>
+    <structure id="fighter_crack" x="12.5" y="9.5" />
+    <object id="ship_chest" x="11" y="9">
+      var p = Std.random(100);
+      if (p > 75) {
+        this.inventory.addItems(Item.get("exotic_matter"), 1);
+        this.inventory.addItems(Item.get("ship_parts"), 4);
+        this.inventory.addItems(Item.get("titanium"), 15);
+      } else if (p > 50) {
+        this.inventory.addItems(Item.get("ship_parts"), 2);
+        this.inventory.addItems(Item.get("titanium"), 10);
+      } else {
+        this.inventory.addItems(Item.get("ship_parts"), 1);
+        this.inventory.addItems(Item.get("titanium"), 5);
+      }
+    </object>
+  </area>
+    <!-- This belongs here to properly generate the right door. -->
+    <action>
+      function getFighterDoor(wx, wy) {
+        var crack = getStructure("fighter_crack").create((wx + 4.5) * Tile.SIZE,(wy - 2.2) * Tile.SIZE);
+        crack.area_id = "destroyed_fighter.interior";
+        crack.x = 12.5 * Tile.SIZE;
+        crack.y = 9.5 * Tile.SIZE;
+        crack.allowReturn = true;
+        return crack;
+      }
+      function getSmastiriniDoor(wx, wy) {
+        var crack = getStructure("smastirini_crack").create((wx) * Tile.SIZE,(wy) * Tile.SIZE);
+        crack.area_id = "smastirini_interior";
+        crack.x = 18 * Tile.SIZE;
+        crack.y = 15 * Tile.SIZE;
+        crack.allowReturn = true;
+        return crack;
+      }
+    </action>
+</data>
