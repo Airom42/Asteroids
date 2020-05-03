@@ -109,7 +109,7 @@
       <text id="destroyed">The pirates must have destroyed this base... I'll see what I can salvage from the poor miners...</text>
       <text id="com_device">You can call us on your [item=com_device] to find your way back here if needed.</text>
       <text id="call1">Greetings Traveler! I am transmitting our location now...</text>
-      <text id="call2">...[pause=10] Location transmitted! We await your return!</text>
+      <text id="call2">.[pause=3].[pause=3].[pause=3] Location transmitted! We await your return!</text>
     </section>
   </lang>
 </data>

@@ -91,7 +91,7 @@
     <include id="addons/uamt_system.xml" child="init" />
 
     <!--Drones: The mod made by Vortechnix and the UAMT -->
-    <section if="getMod('minigames') != null &&  getMod('drones').isEnabled()">
+    <section if="getMod('minigames') != null && getMod('drones').isEnabled()">
       <include id="addons/space_drone.xml" child="init" />
     </section>
 

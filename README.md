@@ -1,3 +1,4 @@
+# Asteroids
 Thank you for downloading the Asteroids Mod!
 This file is a guide on how to add new asteroid fields, biomes, or even encounters to your own mod! The Asteroids framework is meant to be easily customizable and fully generated from the xml_config file, much like the main game.
 
