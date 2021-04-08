@@ -11,7 +11,7 @@
       <biome id="crash_site" p="2" force="getLocalPlayer().getVar('asteroids_visited') > 1 && !getLocalPlayer().hasQuest('find_smastirini')"/>
       <biome id="pirate_base" p="2" force="getLocalPlayer().hasQuest('find_space_pirates') && !getLocalPlayer().questComplete('find_space_pirates')"/>
       <biome id="miner_base" p="2" available="getLocalPlayer().questComplete('find_space_pirates')" force="getLocalPlayer().getFlag('visit_miners') || (!getLocalPlayer().hasQuest('space_miners') && getLocalPlayer().getVar('asteroids_visited') > 10)"/>
-      <biome id="space_wyrms" p="2" force="true"/>
+      <biome id="space_wyrms" p="2" />
       <biome id="debris_field" p="1"/>
       <biome id="warped" p="1"/>
       <biome id="enemy_cluster" p="1" />
@@ -61,7 +61,7 @@
       </onLoad>
     </biome>
 
-    <biome id="magic" spacing="1.7" extends="standard">
+    <biome id="magic" spacing="1.7" extends="standard" asteroidTile="asteroid.magic">
       <ore id="coal" percent="0.035" />
       <ore id="focus_gem" percent="0.03" />
       <ore id="spirit_gem" percent="0.02" />
@@ -165,7 +165,7 @@
         </onLoad>
     </biome>
 
-    <biome id="sparse_magic" spacing="10">
+    <biome id="sparse_magic" spacing="10" asteroidTile="asteroid.magic">
         <ore id="coal" percent="0.035" />
         <ore id="focus_gem" percent="0.03" />
         <ore id="spirit_gem" percent="0.02" />
@@ -245,7 +245,7 @@
       </onLoad>
     </biome>
 
-    <biome id="space_wyrms" spacing="3">
+    <biome id="space_wyrms" spacing="3" asteroidTile="asteroid.magic">
       <asteroid id="huge" p="1" />
       <asteroid id="big" p="2" />
       <asteroid id="medium" p="2" />
@@ -327,7 +327,7 @@
       <biome id="bomber_battle" p="1" />
     </asteroid_field>
 
-    <biome id="small_battle" spacing="8">
+    <biome id="small_battle" spacing="8" asteroidTile="asteroid.magic">
       <ore id="coal" percent="0.035" />
       <ore id="focus_gem" percent="0.03" />
       <ore id="spirit_gem" percent="0.02" />
@@ -342,7 +342,7 @@
       </onLoad>
     </biome>
 
-    <biome id="medium_battle" spacing="10">
+    <biome id="medium_battle" spacing="10" asteroidTile="asteroid.magic">
       <ore id="coal" percent="0.035" />
       <ore id="focus_gem" percent="0.03" />
       <ore id="spirit_gem" percent="0.02" />
@@ -359,7 +359,7 @@
       </onLoad>
     </biome>
 
-    <biome id="cruiser_battle">
+    <biome id="cruiser_battle" asteroidTile="asteroid.magic">
       <onLoad>
         <enemy id="alien.fighter" count="8" random="2"/>
         <enemy id="alien.bomber" count="2"/>
@@ -369,7 +369,7 @@
       </onLoad>
     </biome>
 
-    <biome id="bomber_battle">
+    <biome id="bomber_battle" asteroidTile="asteroid.magic">
       <onLoad>
         <enemy id="alien.fighter" count="8" random="3"/>
         <enemy id="alien.bomber" count="5" random="2"/>
@@ -378,21 +378,31 @@
       </onLoad>
     </biome>
 
+    <wormhole id="asteroids">
+      <wormhole_exit id="wormhole.orbit" p="4" force="getLocalPlayer().getFlag('never_set')" available="false"/>
+      <wormhole_exit id="asteroids.orbit" p="2" />
+      <wormhole_exit id="asteroids.solar_system.orbit" p="2" />
+      <wormhole_exit id="uamt.asteroids.orbit" p="2" />
+      <wormhole_exit id="depths.orbit" p="1" />
+      <wormhole_exit id="start.gas" p="1"/>
+      <wormhole_exit id="alien_hq.orbit" p="1" available="getLocalPlayer().hasQuest('virus')" />
+    </wormhole>
+
     <!-- ASTEROIDS -->
-    <asteroid id="huge" size="23" size_var="3" tile="asteroid"/>
-    <asteroid id="big" size="17" size_var="2" tile="asteroid"/>
+    <asteroid id="huge" size="23" size_var="3"/>
+    <asteroid id="big" size="17" size_var="2"/>
     <asteroid id="medium" size="12" extends="big" />
-    <asteroid id="small" size="8" size_var="1" tile="asteroid"/>
+    <asteroid id="small" size="8" size_var="1"/>
     <asteroid id="tiny" size="4" extends="small" />
     <asteroid id="tiny_ice" size="4" size_var="1" tile="ice" shape="jagged">
       <ore id="quartz" percent="0.2" />
       <ore id="diamond" percent="0.03" />
     </asteroid>
-    <asteroid id="tiny_magic" size="4" size_var="2" tile="magic1.stone" shape="strange">
+    <asteroid id="tiny_magic" size="4" size_var="2" tile="asteroid.magic" shape="strange">
       <ore id="spirit_gem" percent="0.08" />
       <ore id="blood_gem" percent="0.08" />
     </asteroid>
-    <asteroid id="small_u" size="6" size_var="2" tile="asteroid" shape="perfect">
+    <asteroid id="small_u" size="6" size_var="2" shape="perfect">
       <ore id="uranium" percent="0.05" />
     </asteroid>
     <asteroid id="tiny_s" size="4" size_var="1" tile="stone" shape="perfect" />
@@ -476,6 +486,7 @@
         var wx = cStructure.tile_x;
         var wy = cStructure.tile_y;
         cStructure.area.addStructure(eStructure.create((wx) * Tile.SIZE, (wy) * Tile.SIZE));
+        if(cStructure.area != null) cStructure.area.removeStructure(cStructure, null);
       }
         function wreck(area) {
             var rad = 8;
@@ -498,7 +509,7 @@
             clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
             spawnPatternObjects(area, largeDebris , 15, 3.5, 0.5, wx, wy);
             area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-            area.addStructure(getFighterDoor(wx,wy));
+            area.addStructure(getFighterDoor(wx,wy, 'destroyed_fighter.interior'));
         };
         function pirate_base(area) {
             var rad = 8;
@@ -562,7 +573,7 @@
             clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
             spawnPatternObjects(area, largeDebris, 15, 3.5, 0.5, wx, wy);
             area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-            area.addStructure(getFighterDoorSolarSystem(wx,wy));
+            area.addStructure(getFighterDoor(wx,wy,'destroyed_fighter.solar_system.interior'));
         };
         function drone_crash(area) {
             var wx = Std.random(area.getEndX());

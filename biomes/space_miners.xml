@@ -3,11 +3,10 @@
   <animation id="mine_lab.over" count="1" length="4">
     <append tile="advanced_lab" animation="advanced_lab.lights" offsetX=".32"/>
   </animation>
-  <structure id="mine_lab" width="140" height="80" image="mine_base.png" remove="false" priority="-1" type="crafting">
+  <structure id="mine_lab" image="structures.6" remove="false" priority="-1" type="crafting">
     <operate>
       <section if="!player.questComplete('space_miners')">
-        <dialogue section="space_miners" id="no_entry"/>
-        <stop />
+        <dialogue section="space_miners" id="no_entry"/><stop />
       </section>
     </operate>
     <recipe type="mine_lab" />
@@ -24,21 +23,18 @@
     <over><action>this.loopAnimation("over")</action></over>
     <out><action>this.loopAnimation()</action></out>
     <operate>
-      <section if="player.questComplete('space_miners')">
-        <action>player.fullRestore(); player.restoreOxygen();</action><save sleep="true" />
-      </section>
       <section if="!player.questComplete('space_miners')">
-        <dialogue section="space_miners" id="no_entry"/>
+        <dialogue section="space_miners" id="no_entry"/><stop />
       </section>
+      <action>player.fullRestore(); player.restoreOxygen();</action><save sleep="true" />
     </operate>
     <light tile="light.large" color="9ce1eb" offsetX="30" offsetY="45" />
   </structure>
 
-  <structure id="mine_silo" width="48" height="64" image="mine_silo.png" type="storehouse" main="true" inventory="player.areas.get('mine_silo_sync').getStructureById('storehouse').inventory">
+  <structure id="mine_silo" image="structures.7" type="storehouse" main="true" inventory="player.areas.get('mine_silo_sync').getStructureById('storehouse').inventory">
     <operate>
       <section if="!player.questComplete('space_miners')">
-        <dialogue section="space_miners" id="no_entry"/>
-        <stop />
+        <dialogue section="space_miners" id="no_entry"/><stop />
       </section>
     </operate>
   </structure>
@@ -66,7 +62,7 @@
   <animation id="space_miner.mine" x="1" count="8"/>
   <!-- <animation id="space_miner.walk" x="9" count="12"/> -->
   <animation id="space_miner.walk" x="21" count="4"/>
-  <!-- The walk anim used is actually a fly anim, but NPCs walk in orbits. -->
+  <!-- NPCs walk in orbit, so there is no walk vs fly anim used -->
   <animation id="space_miner.idle" x="26" count="3"/>
   <npc id="space_miner" tile="space_miner" mine="5" flying="true" night="true">
     <idle class="mineOre"><loot id="coal"/><loot id="iron"/><loot id="titanium"/><loot id="gold"/><loot id="uranium"/><loot id="exotic_matter"/></idle>
@@ -83,31 +79,35 @@
   </animation>
   <npc id="space_miner_captain" tile="space_miner_captain" action="talk" talk_sfx="talking1" night="true">
     <operate>
-        <section if="!player.hasQuest('space_miners')">
-            <dialogue section="space_miners" id="gather_stuff1" speaker="this" />
-            <dialogue section="space_miners" id="gather_stuff2" speaker="this" />
-            <dialogue section="space_miners" id="gather_stuff3" speaker="this" />
-            <quest id="space_miners"/>
-        </section>
-        <section if="player.canCompleteQuest('space_miners')">
-          <dialogue section="space_miners" id="gather_stuff4" speaker="this"/>
-          <complete quest="space_miners"/>
-        </section>
-        <section if="!player.hasQuest('mine_beam') && player.questComplete('space_miners')">
-          <dialogue section="space_miners" id="mine_beam1" speaker="this" />
-          <quest id="mine_beam"/>
-        </section>
-        <section if="player.canCompleteQuest('mine_beam')">
-          <dialogue section="space_miners" id="mine_beam2" speaker="this"/>
-          <complete quest="mine_beam"/>
-        </section>
-        <section if="player.hasItem('com_device') && !player.hasContact('space_miner_captain')">
-          <quest /><dialogue section="space_miners" id="com_device" speaker="this" />
+      <section if="!player.hasQuest('space_miners')">
+        <dialogue section="space_miners" id="gather_stuff1" speaker="this" />
+        <dialogue section="space_miners" id="gather_stuff2" speaker="this" />
+        <dialogue section="space_miners" id="gather_stuff3" speaker="this" />
+        <quest id="space_miners"/>
+        <section if="player.hasItem('com_device')">
+          <dialogue section="space_miners" id="com_device" speaker="this" />
           <action>player.setContact("space_miner_captain", "call_space_miner_captain")</action>
         </section>
-        <section if="player.questComplete('mine_beam')">
-          <dialogue section="space_miners" id="thanks" speaker="this"/>
-        </section>
+      </section>
+      <section if="player.canCompleteQuest('space_miners')">
+        <dialogue section="space_miners" id="gather_stuff4" speaker="this"/>
+        <complete quest="space_miners"/>
+      </section>
+      <section if="!player.hasQuest('mine_beam') && player.questComplete('space_miners')">
+        <dialogue section="space_miners" id="mine_beam1" speaker="this" />
+        <quest id="mine_beam"/>
+      </section>
+      <section if="player.canCompleteQuest('mine_beam')">
+        <dialogue section="space_miners" id="mine_beam2" speaker="this"/>
+        <complete quest="mine_beam"/>
+      </section>
+      <section if="player.hasItem('com_device') && !player.hasContact('space_miner_captain')">
+        <quest /><dialogue section="space_miners" id="com_device" speaker="this" />
+        <action>player.setContact("space_miner_captain", "call_space_miner_captain")</action>
+      </section>
+      <section if="player.questComplete('mine_beam')">
+        <dialogue section="space_miners" id="thanks" speaker="this"/>
+      </section>
     </operate>
   </npc>
 
@@ -120,7 +120,7 @@
   </procedure>
 
   <!-- Destroyed variant -->
-  <structure id="destroyed_mine_base" width="180" height="80" image="destroyed_mine_base.png"/>
+  <structure id="destroyed_mine_base" image="structures.5"/>
   <structure id="loot_destroyed_mine_base" extends="destroyed_mine_base" name="inspect">
     <operate>
       <dialogue section="space_miners" id="destroyed" speaker="player" />

@@ -1,4 +1,24 @@
-<tilesheet id='space_wyrm_queen.png' width='95' height='86'>
+<sheets>
+<tilesheet id='space_wyrms.1' sheet='space_wyrms.png' width='17' height='30'>
+	<image frame='0' x='366' y='82' width='16' height='16' offsetX='0' offsetY='7' />
+	<image frame='1' x='366' y='98' width='14' height='18' offsetX='2' offsetY='6' />
+	<image frame='2' x='366' y='116' width='13' height='18' offsetX='2' offsetY='6' />
+	<image frame='3' x='380' y='98' width='14' height='18' offsetX='1' offsetY='6' />
+	<image frame='4' x='400' y='51' width='15' height='18' offsetX='0' offsetY='6' />
+	<image frame='5' x='402' y='29' width='16' height='18' offsetX='0' offsetY='6' />
+	<image frame='6' x='366' y='134' width='13' height='18' offsetX='3' offsetY='6' />
+	<image frame='7' x='394' y='98' width='14' height='18' offsetX='2' offsetY='6' />
+	<image frame='8' x='387' y='29' width='15' height='22' offsetX='1' offsetY='4' />
+	<image frame='9' x='371' y='0' width='16' height='29' offsetX='0' offsetY='0' />
+	<image frame='10' x='387' y='0' width='16' height='29' offsetX='0' offsetY='0' />
+	<image frame='12' x='371' y='29' width='16' height='24' offsetX='0' offsetY='3' />
+	<image frame='13' x='403' y='0' width='14' height='24' offsetX='0' offsetY='3' />
+	<image frame='14' x='387' y='51' width='13' height='22' offsetX='0' offsetY='4' />
+	<image frame='15' x='371' y='53' width='14' height='24' offsetX='0' offsetY='3' />
+	<image frame='16' x='379' y='116' width='13' height='18' offsetX='4' offsetY='6' />
+	<image frame='11' equals='6' offsetX='3' offsetY='6' />
+</tilesheet>
+<tilesheet id='space_wyrms.2' sheet='space_wyrms.png' width='95' height='86'>
 	<image frame='0' x='0' y='0' width='90' height='82' offsetX='5' offsetY='2' />
 	<image frame='1' x='93' y='82' width='91' height='76' offsetX='3' offsetY='5' />
 	<image frame='2' x='0' y='158' width='88' height='76' offsetX='3' offsetY='5' />
@@ -37,3 +57,4 @@
 	<image frame='35' equals='34' offsetX='13' offsetY='5' />
 	<image frame='36' equals='34' offsetX='13' offsetY='5' />
 </tilesheet>
+</sheets>

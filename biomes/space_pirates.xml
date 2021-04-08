@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-  <structure id="pirate_base" width="125" height="71" image="pirate_base.png"/>
+  <structure id="pirate_base" image="structures.1"/>
   <structure id="loot_pirate_base" extends="pirate_base" name="search" >
     <operate>
       <section if="!getFlag('make_utility_ship')">
-          <dialogue section="space_pirates" id="get_utility_ship" speaker="player" />
-          <action>setFlag('make_utility_ship', true)</action>
+        <dialogue section="space_pirates" id="get_utility_ship" speaker="player" />
+        <action>setFlag('make_utility_ship', true)</action>
       </section>
       <action>
         replaceStructure(this,'pirate_base');
@@ -13,7 +13,7 @@
       </action>
     </operate>
   </structure>
-  <structure id="destroyed_pirate_base" width="125" height="70" image="destroyed_pirate_base.png"/>
+  <structure id="destroyed_pirate_base" image="structures.1" x="1"/>
   <structure id="loot_destroyed_pirate_base" extends="destroyed_pirate_base" name="search">
       <operate>
         <action>

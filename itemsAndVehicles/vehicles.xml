@@ -1,53 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <data>
   <include id="utility_ship.xml"/>
-
-  <animation id="utility_droid.walk" x="1" count="8"/>
-  <animation id="utility_droid.fly" x="9" count="12"/>
-  <animation id="utility_droid.attack" x="0" count="1" length="5"/>
-
-  <familiar id="utility_droid" type="flying" canWalk="true" costPerSecond="1">
-      <breakPower amount="1" cost="3" /><light tile="light.headlamp" offsetX="-65" color="999999" />
-      <attack type="projectile" damage="5" cost="10" range="10" sfx="hunter_bot_attack">
-        <projectile tile="war_bot.bolt" animation="war_bot.bolt" speed="5" offsetY="2" delay="4">
-          <hitEffect tile="war_bot.bolt" animation="war_bot.bolt.impact" color="9999ff" />
-        </projectile>
-      </attack>
-  </familiar>
-  <item id="utility_droid" type="animal" cost="1250" weight="15" slot="familiar" flyOrbit="true" needsO2="false" capacity="50" durability="500" oxygen="25" icon="utility_droid">
-      <action id="equip" /><action id="rename" /><equipCost storage="power" cost="25" durability="-25" full="false" />
-      <familiar id="utility_droid" tile="utility_droid" animation="utility_droid" />
-  </item>
-
-  <recipe id="utility_droid" creates="utility_droid" type="advanced_lab" available="getFlag('make_utility_droid')">
-    <item id="war_bot" count="1" />
-    <item id="worker_bot" count="1" />
-    <item id="ship_parts" count="1" />
-    <item id="exotic_matter" count="1" />
-  </recipe>
-
-  <tile id="utility_ship_gun" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
-  <animation id="equipment.utility_ship_gun" count="3"/>
-  <item id="utility_ship_gun" type="equipment" slot="attack" equipOn="utility_ship" cost="400" weight="20" range="10" icon="utility_ship.gun.ico" delay="-2" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-6" offsetX="2" animation="item3">
-    <action id="setProjectile" />
-  </item>
-
-  <tile id="utility_ship_laser" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
-  <animation id="equipment.utility_ship_laser" >
-      <frame x="0" />
-      <frame x="3" count="4" length=".5"/>
-  </animation>
-  <tile id="utility_laser_bolt" sheet="utility_ship.1" x="22"/>
-  <animation id="utility_laser_bolt" count="3"/>
-  <animation id="utility_laser_bolt.impact" count="3"/>
-  <item id="utility_ship_laser" type="equipment" slot="attack" equipOn="utility_ship" cost="400" delay="3" power="20" weight="20" range="20" attack="15" icon="utility_ship.laser.ico">
-    <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
-      <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
-    </projectile>
-  </item>
-
-
-  <tile id="utility_ship" sheet="utility_ship.1" x="0"/>
+  <tile id="utility_ship" sheet="utility_ship.1" />
   <animation id="utility_ship.impulse" x="11" count="4" glow="true" />
   <animation id="utility_ship.fly" count="1" length="4">
     <append tile="utility_ship" animation="utility_ship.impulse" />
@@ -86,6 +40,26 @@
     <food id="titanium" value="250" />
   </item>
 
+  <tile id="utility_ship_gun" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
+  <animation id="equipment.utility_ship_gun" count="3"/>
+  <item id="utility_ship_gun" type="equipment" slot="attack" equipOn="utility_ship" cost="400" weight="20" range="10" icon="utility_ship.gun.ico" delay="-2" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-6" offsetX="2" animation="item3">
+    <action id="setProjectile" />
+  </item>
+
+  <tile id="utility_ship_laser" sheet="utility_ship.1" x="15" offsetY="4" offsetX="-14"/>
+  <animation id="equipment.utility_ship_laser" >
+      <frame x="0" />
+      <frame x="3" count="4" length=".5"/>
+  </animation>
+  <tile id="utility_laser_bolt" sheet="utility_ship.1" x="22"/>
+  <animation id="utility_laser_bolt" count="3"/>
+  <animation id="utility_laser_bolt.impact" count="3"/>
+  <item id="utility_ship_laser" type="equipment" slot="attack" equipOn="utility_ship" cost="400" delay="3" power="20" weight="20" range="20" attack="15" icon="utility_ship.laser.ico">
+    <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
+      <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+    </projectile>
+  </item>
+
   <recipe id="make_utility_ship" creates="utility_ship" type="advanced_lab" available="getFlag('make_utility_ship')">
     <item id="titanium" count="10" />
     <item id="ship_parts" count="5" />
@@ -97,4 +71,25 @@
   <recipe id="make_utility_ship_laser" creates="utility_ship_laser" type="advanced_lab" available="getFlag('make_utility_ship')">
     <item id="advanced_tech" count="2" /><item id="laser_gun" count="1" />
   </recipe>
+
+  <!-- <include id="harbringer.xml" />
+
+  <tile id="harbringer" sheet="harbringer.1" />
+  <animation id="harbringer.center" x="1" count="5" />
+  <animation id="harbringer.engine" x="6" count="5" />
+  <animation id="harbringer.weapon" x="11" count="5" />
+
+  <animation id="harbringer.idle" x="0" count="1" length="5">
+    <append tile="harbringer" animation="harbringer.center" />
+  </animation>
+  <animation id="harbringer.hover" equals="harbringer.idle" />
+  <animation id="harbringer.fly" x="0" count="1" length="5">
+    <append tile="harbringer" animation="harbringer.center" />
+    <append tile="harbringer" animation="harbringer.engine" />
+  </animation>
+  <animation id="harbringer.attack" x="0" count="1" length="5">
+    <append tile="harbringer" animation="harbringer.weapon" />
+  </animation>
+
+  <vehicle id="harbringer" extends="jet" tile="harbringer" /> -->
 </data>

@@ -69,23 +69,22 @@
     </animation>
     <animation id="enemy.utility_ship.idle" x="0" count="1"/>
     <animation id="enemy.utility_ship.walk" x="0" count="1">
-        <append tile="utility_ship" animation="utility_ship.antigrav" />
-        <append tile="utility_ship" animation="utility_ship.impulse" />
+      <append tile="utility_ship" animation="utility_ship.antigrav" />
+      <append tile="utility_ship" animation="utility_ship.impulse" />
     </animation>
 
-    <enemy id="enemy.utility_ship" tile="utility_ship" health="150" defense="8" color="B55218" colorScale="1.6" type="surface" range="32" speed="5" vertical="true" flying="true" passEnemies="true" death_sfx="explosion">
-        <loot id="titanium" p="3" /><loot id="exotic_matter" p="1" /><loot id="advanced_tech" p="1" />
-        <attack type="projectile" animation="fire" damage="20" range="15" cost="0" cooldown="25">
-          <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
-            <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
-          </projectile>
-        </attack>
+    <enemy id="enemy.utility_ship" tile="utility_ship" health="150" defense="8" type="surface" range="32" speed="5" vertical="true" flying="true" passEnemies="true" death_sfx="explosion">
+      <loot id="titanium" p="3" /><loot id="exotic_matter" p="1" /><loot id="advanced_tech" p="1" />
+      <attack type="projectile" animation="fire" damage="20" range="15" cost="0" cooldown="25">
+        <projectile tile="utility_laser_bolt" animation="utility_laser_bolt" speed="5" offsetY="4">
+          <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+        </projectile>
+      </attack>
     </enemy>
 
-
     <!-- Space Wyrms -->
-    <include id="space_wyrm_queen.xml" includeRoot="true"/>
-    <tile id="space_wyrm_queen" sheet="space_wyrm_queen.png" x="0" />
+    <include id="space_wyrms.xml" />
+    <tile id="space_wyrm_queen" sheet="space_wyrms.2" />
     <animation id="wyrm_queen.pre_attack" x="9" count="5" length="1.5"/>
     <animation id="wyrm_queen.post_attack" x="9" count="4" reverse="true"/>
 
@@ -110,10 +109,9 @@
       <hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
     </enemy>
 
-    <enemy id="space_wyrm_miner" extends="magnewyrm" eatTile="asteroid"/>
-    <tilesheet id="space_wyrm_attack.png" width="17" height="30"/>
-    <tile id="space_wyrm_attack" sheet="space_wyrm_attack.png" x="0" />
-    <enemy id="space_wyrm_attack" tile="space_wyrm_attack" animation="wyrm" health="25" defense="7" damage="20" range="16" type="surface" flying="true" vertical="true" eatTile="asteroid" attack_sfx="wyrm_attack" passEnemies="true">
+    <enemy id="space_wyrm_miner" extends="magnewyrm" eatTile="asteroid.magic"/>
+    <tile id="space_wyrm_attack" sheet="space_wyrms.1"/>
+    <enemy id="space_wyrm_attack" tile="space_wyrm_attack" animation="wyrm" health="25" defense="7" damage="20" range="16" type="surface" flying="true" vertical="true" eatTile="asteroid.magic" attack_sfx="wyrm_attack" passEnemies="true">
       <loot id="dragonblood" count="2"/><sound id="death" value="wyrm_death" />
     </enemy>
 </data>

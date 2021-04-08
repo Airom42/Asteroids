@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-  <structure id="destroyed_drone" width="89" height="73" image="destroyed_drone.png" priority="-2" behind="true" remove="false" />
+  <structure id="destroyed_drone" image="structures.4" priority="-2" behind="true" remove="false" />
   <structure id="loot_destroyed_drone" extends="destroyed_drone" name="search">
     <operate>
       <action>
@@ -10,11 +10,9 @@
     </operate>
   </structure>
 
-  <area id="destroyed_fighter.solar_system.interior" width="32" height="32" hasO2="false" background="destroyed_fighter_interior" temporary="true">
+  <area id="destroyed_fighter.solar_system.interior" width="32" height="32" hasO2="false" background="destroyed_fighter_interior">
     <tiles id="empty" start="0" end="1" /><init><runAreaLoad /></init><onLoad><music id="subterranean_oscillation" seconds="1" /></onLoad>
-    <action>
-      for(x in 11...16) mine(x,9); mine(15,8); for(x in 13...16) mine(x,7);
-    </action>
+    <action>for(x in 11...16) mine(x,9); mine(15,8); for(x in 13...16) mine(x,7);</action>
     <structure id="destroyed_fighter_interior" x="8" y="11.7" />
     <structure id="fighter_crack" x="12.5" y="9.5" />
     <object id="ship_chest" x="11" y="9">
@@ -46,15 +44,4 @@
       }
     </object>
   </area>
-
-  <action>
-    function getFighterDoorSolarSystem(wx, wy) {
-      var crack = getStructure("fighter_crack").create((wx + 4.5) * Tile.SIZE,(wy - 2.2) * Tile.SIZE);
-      crack.area_id = "destroyed_fighter.solar_system.interior";
-      crack.x = 12.5 * Tile.SIZE;
-      crack.y = 9.5 * Tile.SIZE;
-      crack.allowReturn = true;
-      return crack;
-    }
-  </action>
 </data>

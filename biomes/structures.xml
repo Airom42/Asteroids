@@ -1,0 +1,25 @@
+<sheets>
+<tilesheet id='structures.1' sheet='structures.png' width='125' height='70'>
+	<image frame='0' x='314' y='79' width='125' height='70' offsetX='0' offsetY='0' />
+	<image frame='1' x='314' y='149' width='125' height='69' offsetX='0' offsetY='1' />
+</tilesheet>
+<tilesheet id='structures.2' sheet='structures.png' width='174' height='110'>
+	<image frame='0' x='0' y='0' width='174' height='110' offsetX='0' offsetY='0' />
+	<image frame='1' x='0' y='110' width='174' height='110' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='structures.3' sheet='structures.png' width='30' height='33'>
+	<image frame='0' x='222' y='158' width='30' height='33' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='structures.4' sheet='structures.png' width='89' height='72'>
+	<image frame='0' x='354' y='0' width='89' height='72' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='structures.5' sheet='structures.png' width='180' height='80'>
+	<image frame='0' x='174' y='0' width='180' height='79' offsetX='0' offsetY='1' />
+</tilesheet>
+<tilesheet id='structures.6' sheet='structures.png' width='140' height='80'>
+	<image frame='0' x='174' y='79' width='140' height='79' offsetX='0' offsetY='1' />
+</tilesheet>
+<tilesheet id='structures.7' sheet='structures.png' width='48' height='64'>
+	<image frame='0' x='174' y='158' width='48' height='64' offsetX='0' offsetY='0' />
+</tilesheet>
+</sheets>

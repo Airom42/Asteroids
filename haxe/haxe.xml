@@ -44,9 +44,10 @@
         function generateSeedAsteroid(xOffset, area, config) {
             var height = getAreaXML(area.id).get('height');
             var ass = config.getRandomAsteroid();
+            var tile = ifNull(ass.tile, ifNull(config.asteroidTile, random() > 0.1 ? 'asteroid' : 'asteroid.old'));
             if (ass == null) { return area.getEndX(); } // this is for no asteroids configs
             var size = ass.getSize();
-            buildFromSeed(area, xOffset, Std.random(Math.max(height - 2 * size, 0)) + Math.min(size, height / 2), size, ass.tile, ass.ores == null ? config.ores : ass.ores, ass.shape, ass.enemies == null ? config.enemies : ass.enemies);
+            buildFromSeed(area, xOffset, Std.random(Math.max(height - 2 * size, 0)) + Math.min(size, height / 2), size, tile, ass.ores == null ? config.ores : ass.ores, ass.shape, ass.enemies == null ? config.enemies : ass.enemies);
             // this is finely tweaked math :P
             return size * (1 + config.spacing / 2) + Std.random(size) * config.spacing;
         }
@@ -76,9 +77,9 @@
             }
         }
 
-        function buildFromSeed(area, X, Y, max_radius, tile, ores_prefilter, type, enemies_prefilter) {
+        function buildFromSeed(area, X, Y, max_radius, tile, ores_prefilter, type, ?enemies_prefilter) {
             ores = filterOres(ores_prefilter);
-            enemies = filterOres(enemies_prefilter);
+            enemies = enemies_prefilter == null ? [] : filterOres(enemies_prefilter);
             toprocess = [{x: X, y: Y, dist: 0}];
             done = [];
             while(toprocess.length > 0) {
@@ -92,7 +93,7 @@
                 area.setTile(curTile.x, curTile.y, BASE_LAYER, area.addTileIndex(tile));
                 area.setLit(curTile.x,curTile.y);
                 setOres(area, curTile, ores);
-                setEnemies(area,curTile,enemies);
+                if(enemies.length > 0) setEnemies(area,curTile,enemies);
                 // now go in all directions and increase distance
                 toprocess.push({x: curTile.x + 1, y: curTile.y, dist: curTile.dist + 1});
                 toprocess.push({x: curTile.x - 1, y: curTile.y, dist: curTile.dist + 1});
@@ -122,12 +123,13 @@
             }
         }
         function setEnemies(area, curTile, enemies) {
-            for (enemy in enemies) {
-                if (enemy.percent > random()) {
-                    spawnObject(area, enemy.enemy, curTile.x, curTile.y, true);
-                    return;
-                }
-            }
+              for (enemy in enemies) {
+                  if (enemy.percent > random()) {
+                      spawnObject(area, enemy.enemy, curTile.x, curTile.y, true);
+                      return;
+                  }
+              }
+
         }
 
         function filterOres(ores) {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <include id="structures.xml" />
+  <include id="smastirini.xml"/>
+  <include id="space_pirates.xml"/>
+  <include id="space_miners.xml"/>
+  <include id="solar_system.xml"/>
+  <!-- <include id="wormhole.xml"/> -->
+</data>

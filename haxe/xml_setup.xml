@@ -156,7 +156,7 @@
         this.if = getIf(this.xml);
         this._size = ifNull(Std.parseInt(this.xml.get('size')), 10); // 10 is deafult to prevent issues with generation
         this._size_var = ifNull(Std.parseInt(this.xml.get('size_var')), 0);
-        this.tile = this.xml.get('tile');
+        this.tile = this.xml.get('tile')
         this.shape = ifNull(this.xml.get('shape'), 'round');
         this.getTile = function() { return getTile(this.tile); }
         for (ore in this.xml.elementsNamed('ore')) {
@@ -181,6 +181,7 @@
         this.if = getIf(this.xml);
         this.spacing = ifNull(Std.parseFloat(this.xml.get('spacing')), 1);
         this.ores = [];
+        this.asteroidTile = this.xml.get('asteroidTile');
         for (ore in this.xml.elementsNamed('ore')) {
             this.ores.push({ ore: ore.get('id'), percent: Std.parseFloat(ore.get('percent')), if: getIf(ore) });
         }
@@ -257,5 +258,41 @@
         };
     </data>
 
+    <data type="wormhole">
+      this.id = this.xml.get('id');
 
+      this.getRandomExit = function() {
+          this._load();
+          totalp = 0;
+          player = getLocalPlayer();
+          currentArea = player.vehicle == null?player.area.id:player.vehicle.area.id;
+          for (exit in this._exits) {
+              if (evalIf(exit) && currentArea != exit.exit) {
+                  if(evalForce(exit)) return exit.exit;
+                  totalp += exit.p;
+              }
+          }
+          p = Std.random(totalp);
+          for (exit in this._exits) {
+              if (evalIf(exit) && currentArea != exit.exit) {
+                  p -= exit.p;
+                  if (0 > p) {
+                    trace(exit.exit);
+                    return exit.exit;
+                  }
+              }
+          }
+          return null;
+      };
+
+      this._load = function() {
+          if (this._exits == null) {
+              this._exits = [];
+              for (exit in this.xml.elementsNamed('wormhole_exit')){
+              eP = ifNull(Std.parseInt(exit.get('p')), 0);
+              this._exits.push({exit: exit.get('id'), p: eP, if: getIf(exit), force: exit.get('force')});
+              }
+          }
+      };
+    </data>
 </data>

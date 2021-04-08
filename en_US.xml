@@ -13,9 +13,9 @@
     <section id="system.planet.desc">
       <text id="asteroids">Due to it's ever shifting nature, this unrealisticaly packed asteroid field is never the same twice!</text>
       <text id="uamt.asteroids">Due to it's ever shifting nature, this unrealisticaly packed asteroid field is never the same twice!</text>
-      <text id="smastirini">There is a [color=ff2222]Distress Beacon[/color] coming from here!</text>
-      <text id="asteroids.solar_system">Once a great mining location, now full of debris.</text>
-      <text id="asteroids.hq_battlefield">Help the Colony fight off the aliens.</text>
+      <text id="smastirini">No navigation data.</text>
+      <text id="asteroids.solar_system">Once a great mining location, now full of debris from Earth's armies.</text>
+      <text id="asteroids.hq_battlefield">Aid humanity on the front lines of the war!</text>
     </section>
     <section id="item.names">
       <text id="utility_ship">Utility Ship</text>
@@ -32,7 +32,6 @@
     <section id="item.descriptions">
       <text id="utility_ship">An ATV with heavy shields and spaceflight capability!</text>
       <text id="utility_droid">All-purpose combat droid.</text>
-      <text id="advanced_tech">Pieces of highly advanced tech.</text>
       <text id="fighter.mine">[tile=power]Power per Item: 100 \n Mines and collects Items.</text>
     </section>
     <section id="npc">
@@ -45,16 +44,16 @@
     </section>
     <section id="quests">
       <text id="find_smastirini">Distress Signal</text>
-      <text id="find_space_pirates">Find Pirates</text>
+      <text id="find_space_pirates">Space Pirates</text>
       <text id="get_adv_tech">Advanced Tech</text>
       <text id="space_miners">Find Materials</text>
       <text id="mine_beam">New Tech</text>
     </section>
     <section id="quest.description">
       <text id="find_smastirini">Investigate the distress signal.</text>
-      <text id="find_space_pirates">wants you to find Space Pirates.</text>
+      <text id="find_space_pirates">wants you to find and eliminate Space Pirates.</text>
       <text id="get_adv_tech">requests some materials for new technology.</text>
-      <text id="space_miners">needs weapon materials.</text>
+      <text id="space_miners">needs materials for new weapons.</text>
       <text id="mine_beam">needs materials for new mining tech.</text>
     </section>
     <section id="empty_space">
@@ -64,9 +63,9 @@
     </section>
     <section id="awreck_logs">
       <text id="distress">I'm picking up a distress signal from this area! I must investigate!</text>
-      <text id="awreck_log1">We c..me here to ..est these new drones. They we..e said t.. be fai..proof.</text>
-      <text id="awreck_log2">They se..med to work. But th..n... They turn..d on us.</text>
-      <text id="awreck_log3">We don'.. know f..om w...re. But they came. An.. th... de...r..yed us. We h.... n.. ch...</text>
+      <text id="awreck_log1">We c@me here to test these new drones. Thay were said t0 be faii proof.</text>
+      <text id="awreck_log2">They se&med to work. But th#n... They turn*d on us.</text>
+      <text id="awreck_log3">We don'.. know f%om w^re. But they came. An.. they des&r..yed us. We h$& n.. ch*n@#</text>
       <text id="awreck_read">I've already read this. I know how it ends...</text>
       <text id="smastirini1">The rest of this log is too corrupted to read. I wonder if those droids are still around...</text>
       <text id="smastirini2">These logs suggest this ship was part of a larger mission...</text>
