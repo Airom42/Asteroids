@@ -28,6 +28,7 @@
       <text id="fighter.mine">Mining Beam</text>
       <text id="antimatter_bomb">Antimatter Bomb</text>
       <text id="matter_bomb">Fighter Bomb</text>
+      <text id="asteroid_scanner">Asteroid Field Scanner</text>
     </section>
     <section id="item.descriptions">
       <text id="utility_ship">An ATV with heavy shields and spaceflight capability!</text>
@@ -109,6 +110,19 @@
       <text id="com_device">You can call us on your [item=com_device] to find your way back here if needed.</text>
       <text id="call1">Greetings Traveler! I am transmitting our location now...</text>
       <text id="call2">.[pause=3].[pause=3].[pause=3] Location transmitted! We await your return!</text>
+    </section>
+    <section id="asteroid_scanner">
+      <text id="not_asteroid_field">Error: Not an asteroid field!</text>
+      <text id="choose_field">Select A Biome.</text>
+      <text id="biome_selected">A suitable biome has been located. The next time you enter this asteroid field, that biome will generate.</text>
+      <text id="crystal_full">The temporal crystal is still completely intact.</text>
+      <!-- <text id="crystal_full">The [item=temporal_crystal] is still completely intact.</text> -->
+      <text id="no_crystal">You do not have any temporal_crystals!</text>
+      <!-- <text id="no_crystal">You do not have any [item=temporal_crystal]s!</text> -->
+    </section>
+    <section id="actions">
+      <text id="scan_asteroid_field">Scan Asteroid Field</text>
+      <text id="replace_crystal">Replace Crystal</text>
     </section>
   </lang>
 </data>

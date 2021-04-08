@@ -13,7 +13,7 @@
       </action>
     </operate>
   </structure>
-  <structure id="destroyed_pirate_base" image="structures.1" x="1"/>
+  <structure id="destroyed_pirate_base" image="structures.2"/>
   <structure id="loot_destroyed_pirate_base" extends="destroyed_pirate_base" name="search">
       <operate>
         <action>

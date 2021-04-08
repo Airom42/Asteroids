@@ -90,6 +90,24 @@
             ey = ifNull(Std.parseInt(spawner.get("y")), Std.random(getAreaXML(area.id).get('height') - (radius * 2)) + radius);
             spawnPatternObjects(area, objects, radius, step, percent, ex, ey);
         }
+
+        //Courtesy of Etrotta
+        function convertToName(id){
+          // return id;
+          var final = "";
+          var reg = new EReg("[_.-]+", "g");
+          for (word in reg.replace(id,"#").split("#")){
+            if (word == "sci1") word = "science1";
+            var result;
+            var name = getText("world>"+word);
+            if (name != null) {
+              result = name.getValue();
+            }
+            else result = word.charAt(0).toUpperCase() + word.substring(1);
+            final += " " + result ;
+          }
+          return final.substring(1);
+        }
     </action>
 
     <data type="exotic">
@@ -115,6 +133,12 @@
         this.getRandomBiome = function() {
             this._load();
 
+            biomeForce = getGlobal('asteroid_field_force');
+            if (biomeForce != null && biomeForce.substring(0,this.id.length) == this.id) {
+              setGlobal('asteroid_field_force', null);
+              return getData('biome', biomeForce.substring(this.id.length));
+            }
+
             totalp = 0;
             for (biome in this._biomes) {
                 if (biome.biome.isEnabled() && evalIf(biome)) {
@@ -134,6 +158,11 @@
             }
             return null;
         };
+
+        this.getBiomes = function() {
+          this._load();
+          return this._biomes;
+        }
 
         this._load = function() {
             if (this._biomes == null) {
@@ -156,9 +185,9 @@
         this.if = getIf(this.xml);
         this._size = ifNull(Std.parseInt(this.xml.get('size')), 10); // 10 is deafult to prevent issues with generation
         this._size_var = ifNull(Std.parseInt(this.xml.get('size_var')), 0);
-        this.tile = this.xml.get('tile')
+        this.tile = this.xml.get('tile');
         this.shape = ifNull(this.xml.get('shape'), 'round');
-        this.getTile = function() { return getTile(this.tile); }
+        // this.getTile = function() { return getTile(this.tile); }
         for (ore in this.xml.elementsNamed('ore')) {
             if (this.ores == null) { this.ores = []; }
             this.ores.push({ ore: ore.get('id'), percent: Std.parseFloat(ore.get('percent')), if: getIf(ore) });
@@ -182,6 +211,8 @@
         this.spacing = ifNull(Std.parseFloat(this.xml.get('spacing')), 1);
         this.ores = [];
         this.asteroidTile = this.xml.get('asteroidTile');
+        this.icon = this.xml.get('icon');
+        this.name = ifNull(this.xml.get('name'), convertToName(this.id));
         for (ore in this.xml.elementsNamed('ore')) {
             this.ores.push({ ore: ore.get('id'), percent: Std.parseFloat(ore.get('percent')), if: getIf(ore) });
         }

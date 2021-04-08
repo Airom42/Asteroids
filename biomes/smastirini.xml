@@ -76,8 +76,8 @@
   </area>
 
   <!-- The fighter escort Smastirini-12 -->
-  <structure id="destroyed_fighter" image="structures.2" priority="-2" behind="true" remove="false" />
-  <structure id="destroyed_fighter_interior" extends="destroyed_fighter" image="structures.2" x="1"/>
+  <structure id="destroyed_fighter" image="structures.3" priority="-2" behind="true" remove="false" />
+  <structure id="destroyed_fighter_interior" extends="destroyed_fighter" image="structures.4"/>
   <structure id="loot_destroyed_fighter" extends="destroyed_fighter" name="search">
       <operate>
         <dialogue section="awreck_logs" id="loot_jumpship" speaker="player"/>
@@ -88,7 +88,7 @@
       </operate>
   </structure>
 
-  <structure id="fighter_crack" image="structures.3" name="enter" type="door" fullHeight="true"/>
+  <structure id="fighter_crack" image="structures.5" name="enter" type="door" fullHeight="true"/>
   <structure id="asteroid_logs" extends="medicom" animation="medicom">
     <operate>
       <section if="player.hasQuest('find_smastirini')">

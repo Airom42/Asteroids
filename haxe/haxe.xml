@@ -44,8 +44,9 @@
         function generateSeedAsteroid(xOffset, area, config) {
             var height = getAreaXML(area.id).get('height');
             var ass = config.getRandomAsteroid();
-            var tile = ifNull(ass.tile, ifNull(config.asteroidTile, random() > 0.1 ? 'asteroid' : 'asteroid.old'));
             if (ass == null) { return area.getEndX(); } // this is for no asteroids configs
+            
+            var tile = ifNull(ass.tile, ifNull(config.asteroidTile, random() > 0.1 ? 'asteroid' : 'asteroid.old'));
             var size = ass.getSize();
             buildFromSeed(area, xOffset, Std.random(Math.max(height - 2 * size, 0)) + Math.min(size, height / 2), size, tile, ass.ores == null ? config.ores : ass.ores, ass.shape, ass.enemies == null ? config.enemies : ass.enemies);
             // this is finely tweaked math :P

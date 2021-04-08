@@ -8,6 +8,7 @@
   <requires>Full Version</requires>
   <loadAfter>Drones</loadAfter>
   <loadAfter>Minigames</loadAfter>
+  <loadAfter>Ore Scanner</loadAfter>
   <init>
     <music id="asteroids" /><!-- By Vortechnix -->
     <music id="subterranean_oscillation" /><!-- By Airom -->

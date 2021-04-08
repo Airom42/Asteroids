@@ -3,7 +3,7 @@
   <animation id="mine_lab.over" count="1" length="4">
     <append tile="advanced_lab" animation="advanced_lab.lights" offsetX=".32"/>
   </animation>
-  <structure id="mine_lab" image="structures.6" remove="false" priority="-1" type="crafting">
+  <structure id="mine_lab" image="structures.8" remove="false" priority="-1" type="crafting">
     <operate>
       <section if="!player.questComplete('space_miners')">
         <dialogue section="space_miners" id="no_entry"/><stop />
@@ -31,7 +31,7 @@
     <light tile="light.large" color="9ce1eb" offsetX="30" offsetY="45" />
   </structure>
 
-  <structure id="mine_silo" image="structures.7" type="storehouse" main="true" inventory="player.areas.get('mine_silo_sync').getStructureById('storehouse').inventory">
+  <structure id="mine_silo" image="structures.9" type="storehouse" main="true" inventory="player.areas.get('mine_silo_sync').getStructureById('storehouse').inventory">
     <operate>
       <section if="!player.questComplete('space_miners')">
         <dialogue section="space_miners" id="no_entry"/><stop />
@@ -120,7 +120,7 @@
   </procedure>
 
   <!-- Destroyed variant -->
-  <structure id="destroyed_mine_base" image="structures.5"/>
+  <structure id="destroyed_mine_base" image="structures.7"/>
   <structure id="loot_destroyed_mine_base" extends="destroyed_mine_base" name="inspect">
     <operate>
       <dialogue section="space_miners" id="destroyed" speaker="player" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-  <structure id="destroyed_drone" image="structures.4" priority="-2" behind="true" remove="false" />
+  <structure id="destroyed_drone" image="structures.6" priority="-2" behind="true" remove="false" />
   <structure id="loot_destroyed_drone" extends="destroyed_drone" name="search">
     <operate>
       <action>
