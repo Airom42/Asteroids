@@ -5,6 +5,12 @@
       <text id="mine_lab">Miner's Lab</text>
       <text id="mine_silo">Silo</text>
     </section>
+    <section id="system">
+      <text id="wormhole">Uncharted System</text>
+    </section>
+    <section id="system.desc">
+      <text id="wormhole">There are no known records of this place through the wyrmhole.</text>
+    </section>
     <section id="system.planet">
       <text id="asteroids">Asteroid Field</text>
       <text id="smastirini">ESA-Smastirini</text>
@@ -16,6 +22,7 @@
       <text id="smastirini">No navigation data.</text>
       <text id="asteroids.solar_system">Once a great mining location, now full of debris from Earth's armies.</text>
       <text id="asteroids.hq_battlefield">Aid humanity on the front lines of the war!</text>
+      <text id="wormhole.asteroids">A lone rocky belt around an empty star.</text>
     </section>
     <section id="item.names">
       <text id="utility_ship">Utility Ship</text>

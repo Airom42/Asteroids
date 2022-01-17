@@ -106,11 +106,11 @@
     </system>
 
     <system id="alien_hq" extends="alien_hq">
-      <planet id="asteroids.hq_battlefield" tile="alien_locator" animation="alien_locator" offsetX="150" offsetY="75" name="system.planet.hq_battlefield" available="getFlag('colony_world')"/>
+      <planet id="asteroids.hq_battlefield" tile="alien_locator" animation="alien_locator" offsetX="150" offsetY="75" name="system.planet.hq_battlefield" available="getFlag('colony_world') && !getFlag('dragon_sanctuary')"/>
     </system>
 
     <system id="wormhole" available="false" x="-10">
-      <planet id="asteroids.wormhole" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
+      <planet id="wormhole.asteroids" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
     </system>
 
     <!-- UAMT System Addon: The modular system created by the UAMT -->

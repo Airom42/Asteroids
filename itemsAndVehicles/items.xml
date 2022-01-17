@@ -176,14 +176,16 @@
   </item>
 
   <!-- TODO: Change to temporal crystal -->
-  <recipe id="craft_asteroid_scanner" creates="asteroid_scanner">
-    <type id="advanced_lab" available="player.questComplete('asteroid_scanner')" />
-    <item id="sonar" count="1"/><item id="advanced_tech" count="2" /><item id="temporal_crystal" count="1"/>
-  </recipe>
   <section if="modEnabled('ore_scanner')">
     <recipe id="craft_asteroid_scanner" creates="asteroid_scanner">
       <type id="advanced_lab" available="player.questComplete('asteroid_scanner')" />
       <item id="ore_scanner" count="1"/><item id="sonar" count="1"/><item id="advanced_tech" count="2" /><item id="temporal_crystal" count="1"/>
+    </recipe>
+  </section>
+  <section if="!modEnabled('ore_scanner')">
+    <recipe id="craft_asteroid_scanner" creates="asteroid_scanner">
+      <type id="advanced_lab" available="player.questComplete('asteroid_scanner')" />
+      <item id="steel_bar" count="2" /><item id="sonar" count="1"/><item id="advanced_tech" count="2" /><item id="temporal_crystal" count="1"/>
     </recipe>
   </section>
 </data>

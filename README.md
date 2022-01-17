@@ -2,9 +2,9 @@
 Thank you for downloading the Asteroids Mod!
 This file is a guide on how to add new asteroid fields, biomes, or even encounters to your own mod! The Asteroids framework is meant to be easily customizable and fully generated from the xml_config file, much like the main game.
 
-First of all, you need to make sure that your mod will load after Asteroids, so you mod recognizes Asteroids's functions. To do this, simple add <loadAfter>Asteroids</loadAfter> between the <version> and <init> tags of your mod.
+First of all, you need to make sure that your mod will load after Asteroids, so your mod recognizes Asteroids's functions. To do this, simple add <loadAfter>Asteroids</loadAfter> between the <version> and <init> tags of your mod.
 
-Next of all, you need to tell an area to load an asteroid field config. To do this, simply add <action>generateAsteroidArea(this);</action> inside the <init> tag of the area. Then, define asteroid_field="config_name" in the area's XML. For examples, see the main mod.xml. If you want the area to regenrate when the player leaves, add <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave> inside the area tag.
+Next of all, you need to tell an area to load an asteroid field config. To do this, simply add <action>generateAsteroidArea(this);</action> inside the <init> tag of the area. Then, define asteroid_field="config_name" in the area's XML. For examples, see the main mod.xml. If you want the area to regenerate when the player leaves, add <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave> inside the area tag.
 
 If you have followed the instructions so far, you now have an area ready to load an asteroid config! Next up, you must define the config.
 An asteroid field config is made up of some number of biomes. Each of these biomes are made up of asteroids, ores, exotics, and what happens onLoad (when the player enters).
