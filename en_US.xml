@@ -4,6 +4,7 @@
       <text id="looted">I've already looted this!</text>
       <text id="mine_lab">Miner's Lab</text>
       <text id="mine_silo">Silo</text>
+      <text id="asteroids_end">You have reached the end of Asteroids for this update.</text>
     </section>
     <section id="system">
       <text id="wormhole">Uncharted System</text>
@@ -36,11 +37,13 @@
       <text id="antimatter_bomb">Antimatter Bomb</text>
       <text id="matter_bomb">Fighter Bomb</text>
       <text id="asteroid_scanner">Asteroid Field Scanner</text>
+      <text id="temporal_crystal">Temporal Crystal</text>
     </section>
     <section id="item.descriptions">
       <text id="utility_ship">An ATV with heavy shields and spaceflight capability!</text>
       <text id="utility_droid">All-purpose combat droid.</text>
       <text id="fighter.mine">[tile=power]Power per Item: 100 \n Mines and collects Items.</text>
+      <text id="temporal_crystal">Strange patterns flicker across its surface, and it seems not entirely of this reality.</text>
     </section>
     <section id="npc">
       <text id="space_miner">Space Miner</text>
@@ -122,10 +125,8 @@
       <text id="not_asteroid_field">Error: Not an asteroid field!</text>
       <text id="choose_field">Select A Biome.</text>
       <text id="biome_selected">A suitable biome has been located. The next time you enter this asteroid field, that biome will generate.</text>
-      <text id="crystal_full">The temporal crystal is still completely intact.</text>
-      <!-- <text id="crystal_full">The [item=temporal_crystal] is still completely intact.</text> -->
-      <text id="no_crystal">You do not have any temporal_crystals!</text>
-      <!-- <text id="no_crystal">You do not have any [item=temporal_crystal]s!</text> -->
+      <text id="crystal_full">The [item=temporal_crystal] is still completely intact.</text>
+      <text id="no_crystal">You do not have any [item=temporal_crystal]s!</text>
     </section>
     <section id="actions">
       <text id="scan_asteroid_field">Scan Asteroid Field</text>

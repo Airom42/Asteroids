@@ -18,7 +18,18 @@
       <biome id="empty_space" p="1" />
       <biome id="destroyed_miner_base" p="1"/>
       <biome id="destroyed_pirate_base" p="1"/>
+      <biome id="wormhole" p="1" available="getLocalPlayer().getVar('asteroids_visited') > 10" force="getLocalPlayer().getVar('asteroids_visited') > 50 && !getLocalPlayer().hasSeenItem('temporal_crystal')" />
     </asteroid_field>
+
+    <wormhole id="asteroids.orbit">
+      <wormhole_exit id="wormhole.orbit" p="4" force="getLocalPlayer().getFlag('never_set')" available="false"/>
+      <wormhole_exit id="asteroids.orbit" p="1" />
+      <wormhole_exit id="asteroids.solar_system.orbit" p="2" />
+      <wormhole_exit id="uamt.asteroids.orbit" p="2" />
+      <wormhole_exit id="depths.orbit" p="1" />
+      <wormhole_exit id="start.gas" p="1"/>
+      <wormhole_exit id="alien_hq.orbit" p="1" available="getLocalPlayer().hasQuest('virus') && !getFlag('alien_hq.locked')" />
+    </wormhole>
 
     <biome id="standard">
       <asteroid id="huge" p="1" />
@@ -258,6 +269,12 @@
       <onLoad><enemy id="space_wyrm_queen" count="3"/></onLoad>
     </biome>
 
+    <biome id="wormhole" spacing="5" name="???">
+      <onLoad>
+        <object id="wormhole" x="150" y="40" />
+      </onLoad>
+    </biome>
+
     <!-- SOLAR SYSTEM FIELD -->
     <asteroid_field id="solar_system_asteroids">
       <biome id="science.solar_system" p="1" />
@@ -378,15 +395,20 @@
       </onLoad>
     </biome>
 
-    <wormhole id="asteroids">
-      <wormhole_exit id="wormhole.orbit" p="4" force="getLocalPlayer().getFlag('never_set')" available="false"/>
-      <wormhole_exit id="asteroids.orbit" p="2" />
-      <wormhole_exit id="asteroids.solar_system.orbit" p="2" />
-      <wormhole_exit id="uamt.asteroids.orbit" p="2" />
-      <wormhole_exit id="depths.orbit" p="1" />
-      <wormhole_exit id="start.gas" p="1"/>
-      <wormhole_exit id="alien_hq.orbit" p="1" available="getLocalPlayer().hasQuest('virus')" />
-    </wormhole>
+    <!-- THROUGH THE WORMHOLE -->
+    <asteroid_field id="wormhole">
+      <!-- <biome id="lo_alien_base" p="1" force="getLocalPlayer().getFlag('never_set')"/> -->
+      <biome id="space_wyrms.wormhole" p="2" />
+      <biome id="warped" p="1"/>
+    </asteroid_field>
+
+    <biome id="space_wyrms.wormhole" extends="space_wyrms">
+      <ore id="temporal_crystal" percent="0.01" />
+    </biome>
+
+    <biome id="warped.wormhole" extends="warped">
+      <ore id="temporal_crystal" percent="0.01" />
+    </biome>
 
     <!-- ASTEROIDS -->
     <asteroid id="huge" size="23" size_var="3"/>
@@ -409,7 +431,6 @@
     <asteroid id="b_strange" shape="strange" extends="big"/>
     <asteroid id="m_strange" shape="strange" extends="medium"/>
     <asteroid id="s_strange" shape="strange" extends="small"/>
-
 
     <!-- EXOTICS -->
     <exotic id="titanium_asteroid" type="science" p="20">
@@ -481,108 +502,117 @@
 
     <!-- FUNCTIONS -->
     <action>
-      function replaceStructure(cStructure, nStructure){
-        var eStructure = getStructure(nStructure);
-        var wx = cStructure.tile_x;
-        var wy = cStructure.tile_y;
-        cStructure.area.addStructure(eStructure.create((wx) * Tile.SIZE, (wy) * Tile.SIZE));
-        if(cStructure.area != null) cStructure.area.removeStructure(cStructure, null);
+      // replaces a one time lootable structure with a non-lootable version
+      // expects input id of loot_structure_id to replace with structure_id
+      function replaceStructure(struc){
+        var new_struc = getStructure(struc.id.substring(5));
+        var wx = struc.tile_x * Tile.SIZE;
+        var wy = struc.tile_y * Tile.SIZE;
+        struc.area.addStructure(new_struc.create(wx, wy));
+        if(struc.area != null) struc.area.removeStructure(struc, null);
       }
-        function wreck(area) {
-            var rad = 8;
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10; // avoid setting it too high so the debris will be at edge
-            clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-            buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-            // place wreck
-            for (num in -1...2) {
-                if (Std.random(2) > 0) { continue; }
-                var eObject = getObject('mass_debris' + (Std.random(12)+1));
-                area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            }
-        };
 
-        function fighter_crash(area) {
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-            // Clear everything around it and spawn a small debris field
-            clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-            spawnPatternObjects(area, largeDebris , 15, 3.5, 0.5, wx, wy);
-            area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-            area.addStructure(getFighterDoor(wx,wy, 'destroyed_fighter.interior'));
-        };
-        function pirate_base(area) {
-            var rad = 8;
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-            clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-            buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-            // place base
-            var eStructure = getStructure('loot_pirate_base');
-            area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-        };
-        function destroyed_pirate_base(area) {
-            var rad = 8;
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-            clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-            buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-            // place structure
-            var eStructure = getStructure('loot_destroyed_pirate_base');
-            area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            for (num in -1...2) {
-                if (Std.random(2) > 0) { continue; }
-                var eObject = getObject('mass_debris' + (Std.random(12)+1));
-                area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            }
-        };
-        function mine_base(area) {
-            var rad = 8;
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-            clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-            buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-            // place each indivivualy because it wont take compounds
-            var eStructure = getStructure('mine_lab');
-            area.addStructure(eStructure.create((wx-5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            var eStructure = getStructure('mine_bunker');
-            area.addStructure(eStructure.create((wx-4.5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            var eStructure = getStructure('mine_silo');
-            area.addStructure(eStructure.create((wx+3) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            spawnPatternObjects(area, [{ object: "space_miner", p: 1 }], 10, 2, 0.16, wx, wy);
-        };
-        function destroyed_mine_base(area) {
-            var rad = 8;
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-            clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-            buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-            // place structure
-            var eStructure = getStructure('loot_destroyed_mine_base');
-            area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            for (num in -1...2) {
-                if (Std.random(2) > 0) { continue; }
-                var eObject = getObject('mass_debris' + (Std.random(12)+1));
-                area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-            }
-        };
-        function fighter_crash_solar_system(area) {
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-            // Clear everything around it and spawn a small debris field
-            clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-            spawnPatternObjects(area, largeDebris, 15, 3.5, 0.5, wx, wy);
-            area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-            area.addStructure(getFighterDoor(wx,wy,'destroyed_fighter.solar_system.interior'));
-        };
-        function drone_crash(area) {
-            var wx = Std.random(area.getEndX());
-            var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-            // Clear everything around it and spawn a small debris field
-            clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-            spawnPatternObjects(area, smallDebris , 15, 4, 0.3, wx, wy);
-            area.addStructure(getStructure("loot_destroyed_drone").create(wx * Tile.SIZE,wy * Tile.SIZE));
-        };
+      function wreck(area) {
+          var rad = 8;
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10; // avoid setting it too high so the debris will be at edge
+          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+          // place wreck
+          for (num in -1...2) {
+              if (Std.random(2) > 0) { continue; }
+              var eObject = getObject('mass_debris' + (Std.random(12)+1));
+              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          }
+      }
+
+      function fighter_crash(area) {
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+          // Clear everything around it and spawn a small debris field
+          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+          spawnPatternObjects(area, largeDebris , 15, 3.5, 0.5, wx, wy);
+          area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
+          area.addStructure(getFighterDoor(wx,wy, 'destroyed_fighter.interior'));
+      }
+
+      function pirate_base(area) {
+          var rad = 8;
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+          // place base
+          var eStructure = getStructure('loot_pirate_base');
+          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+      }
+
+      function destroyed_pirate_base(area) {
+          var rad = 8;
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+          // place structure
+          var eStructure = getStructure('loot_destroyed_pirate_base');
+          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          for (num in -1...2) {
+              if (Std.random(2) > 0) { continue; }
+              var eObject = getObject('mass_debris' + (Std.random(12)+1));
+              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          }
+      }
+
+      function mine_base(area) {
+          var rad = 8;
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+          // place each indivivualy because it wont take compounds
+          var eStructure = getStructure('mine_lab');
+          area.addStructure(eStructure.create((wx-5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          var eStructure = getStructure('mine_bunker');
+          area.addStructure(eStructure.create((wx-4.5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          var eStructure = getStructure('mine_silo');
+          area.addStructure(eStructure.create((wx+3) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          spawnPatternObjects(area, [{ object: "space_miner", p: 1 }], 10, 2, 0.16, wx, wy);
+      }
+
+      function destroyed_mine_base(area) {
+          var rad = 8;
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+          // place structure
+          var eStructure = getStructure('loot_destroyed_mine_base');
+          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          for (num in -1...2) {
+              if (Std.random(2) > 0) { continue; }
+              var eObject = getObject('mass_debris' + (Std.random(12)+1));
+              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+          }
+      }
+
+      function fighter_crash_solar_system(area) {
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+          // Clear everything around it and spawn a small debris field
+          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+          spawnPatternObjects(area, largeDebris, 15, 3.5, 0.5, wx, wy);
+          area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
+          area.addStructure(getFighterDoor(wx,wy,'destroyed_fighter.solar_system.interior'));
+      }
+      
+      function drone_crash(area) {
+          var wx = Std.random(area.getEndX());
+          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+          // Clear everything around it and spawn a small debris field
+          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+          spawnPatternObjects(area, smallDebris , 15, 4, 0.3, wx, wy);
+          area.addStructure(getStructure("loot_destroyed_drone").create(wx * Tile.SIZE,wy * Tile.SIZE));
+      }
     </action>
 
     <asteroid id="e_spirit" size="4" size_var="1" tile="magic1.stone2" shape="strange">

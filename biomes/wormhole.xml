@@ -8,14 +8,24 @@
   <object id="wormhole.exit" tile="wormhole" animation="wormhole.out" removeOnComplete="true" save="false" layer="item">
     <addedToArea><sound id="teleport_book" /></addedToArea>
   </object>
-  <object id="wormhole" tile="wormhole" animation="wormhole.idle" network="asteroids" spaceship="true" action="collect" layer="item">
+  <object id="wormhole" tile="wormhole" animation="wormhole.idle" spaceship="true" action="collect" layer="item">
     <tooltip id="enter" section="structure.tooltip" />
     <!-- Add warning if entering w/o spaceship? -->
     <operate>
-      <set id="teleportArea" value="getData('wormhole', this.getInfo().xml.get('network')).getRandomExit()" />
+      <set id="teleportArea" value="getData('wormhole', this.area.getXml().get('asteroid_field')).getRandomExit()" />
       <set id="teleportX" value="getArea(teleportArea).getWidth() / 2"/>
       <teleport area="teleportArea" x="teleportX" y="5" with="ellipse"/>
       <object id="wormhole.exit" x="teleportX" y="10" area="teleportArea" />
     </operate>
   </object>
+
+  <include id="alien.xml" />
+	<tile id="lo_alien" sheet="alien.1" />
+  <enemy id="lo_alien" extends="hi_alien" tile="lo_alien" animation="hi_alien" friendly="true" />
+
+  <npc id="lo_alien_leader" tile="lo_alien" action="talk" animation="exiled" night="true" canBombard="false" icon="exiled.ico">
+    <operate>
+      <dialogue section="common" id="asteroids_end" speaker="this" />
+    </operate>
+  </npc>
 </data>

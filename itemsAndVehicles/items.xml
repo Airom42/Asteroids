@@ -119,7 +119,7 @@
     <item id="exotic_matter" count="1" />
   </recipe>
 
-
+  <item id="temporal_crystal" extends="exotic_matter" weight="-1"/>
 
   <item id="asteroid_scanner" type="tool" cost="2000" weight="0" icon="sonar.ico" unbreakable="true" durability="10">
     <action id="use" name="scan_asteroid_field">
@@ -136,7 +136,7 @@
                   <text text="item.text" x="20" y="0" align="left"/>
                   <onSelect>
                     <action>
-                      setGlobal('asteroid_field_force', planet.id + item.data.id);
+                      setGlobal('asteroid_field_force' + planet.id, item.data.id);
                       setDurability(durability - 1);
                       window.close();
                     </action>

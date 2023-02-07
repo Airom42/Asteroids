@@ -4,8 +4,8 @@
   <structure id="loot_destroyed_drone" extends="destroyed_drone" name="search">
     <operate>
       <action>
-        replaceStructure(this,'destroyed_drone');
-        player.addMultipleItems('ai_core',1 , 'ship_parts',1);
+        replaceStructure(this);
+        player.addMultipleItems('ai_core', 1, 'ship_parts', 1);
       </action>
     </operate>
   </structure>

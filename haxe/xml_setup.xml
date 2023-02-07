@@ -52,7 +52,11 @@
                     case "object":
                         {
                             for (i in 0...ifNull(Std.parseInt(e.get("count")), 1)) {
-                                spawnObject(area, e.get("id"));
+                                if(e.get("x") != null && e.get("y") != null) {
+                                    spawnObject(area, e.get("id"), Std.parseInt(e.get("x")), Std.parseInt(e.get("y")));
+                                } else {
+                                    spawnObject(area, e.get("id"));
+                                }
                             }
                         }
                     case "spawner":
@@ -133,10 +137,10 @@
         this.getRandomBiome = function() {
             this._load();
 
-            biomeForce = getGlobal('asteroid_field_force');
-            if (biomeForce != null && biomeForce.substring(0,this.id.length) == this.id) {
-              setGlobal('asteroid_field_force', null);
-              return getData('biome', biomeForce.substring(this.id.length));
+            biomeToForce = getGlobal('asteroid_field_force' + this.id);
+            if (biomeToForce != null) {
+              setGlobal('asteroid_field_force' + this.id, null);
+              return getData('biome', biomeToForce);
             }
 
             totalp = 0;

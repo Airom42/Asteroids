@@ -36,12 +36,25 @@
       <tile sheet="tiles.png" x="11" p="1" />
       <tile sheet="tiles.png" x="12" p="1" />
     </tile>
+    <tile id="asteroid.ice">
+      <tile sheet="tiles.png" x="13" p="6" />
+      <tile sheet="tiles.png" x="14" p="2" />
+      <tile sheet="tiles.png" x="15" p="2" />
+      <tile sheet="tiles.png" x="16" p="6" />
+      <tile sheet="tiles.png" x="17" p="1" />
+      <tile sheet="tiles.png" x="18" p="1" />
+    </tile>
     <dig id="asteroid.old" cost="4"/>
     <dig id="asteroid" cost="4"/>
     <dig id="asteroid.magic" cost="4"/>
+    <dig id="asteroid.ice" cost="4"/>
+
+    <tile id="temporal_crystal" extends="exotic_matter"/>
 
     <tile id="asteroids_nav" sheet="nav.1" />
     <tile id="asteroids_nav_sol" sheet="nav.2" />
+
+    <recipe id="steak_jump"><item id="steak" /></recipe>
 
     <parallax id="stars.asteroids.orbit" mapBG="0" skyColor="0">
       <layer p="0" glow="true" max_depth="10000"><tile sheet="{mod:full_version}/space/night_bg.png" x="0" y="0" /></layer>
@@ -87,10 +100,20 @@
         <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
     </planet>
 
-    <planet id="asteroids.wormhole" height="80" asteroid_field="asteroids">
+    <planet id="asteroids.wormhole" height="80" asteroid_field="wormhole">
         <orbit id="asteroids.wormhole.orbit" width="280" height="100" background="stars.asteroids.orbit" name="system.planet.asteroids">
           <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
           <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+          <toNav>
+            
+            <section if="!player.questComplete('stabilize_wormhole')">
+              <choose>
+                <dialogue section="wormhole" id="exit_field" speaker="player" if="!player.hasItem('temporal_crystal')" />
+                <teleport area="asteroids.wormhole_base" x="teleportX" y="5" with="ellipse"/>
+              </choose>
+              <stop />
+            </section>
+          </toNav>
         </orbit>
         <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
     </planet>
@@ -110,7 +133,7 @@
     </system>
 
     <system id="wormhole" available="false" x="-10">
-      <planet id="wormhole.asteroids" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
+      <planet id="asteroids.wormhole" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
     </system>
 
     <!-- UAMT System Addon: The modular system created by the UAMT -->

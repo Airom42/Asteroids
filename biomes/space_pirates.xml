@@ -8,7 +8,7 @@
         <action>setFlag('make_utility_ship', true)</action>
       </section>
       <action>
-        replaceStructure(this,'pirate_base');
+        replaceStructure(this);
         player.addMultipleItems('advanced_tech', 3, 'titanium', Std.random(15));
       </action>
     </operate>
@@ -17,7 +17,7 @@
   <structure id="loot_destroyed_pirate_base" extends="destroyed_pirate_base" name="search">
       <operate>
         <action>
-          replaceStructure(this,'destroyed_pirate_base');
+          replaceStructure(this);
           player.addMultipleItems('advanced_tech', 2, 'ship_parts', Std.random(5), 'titanium', Std.random(10));
         </action>
       </operate>

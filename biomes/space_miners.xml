@@ -68,15 +68,11 @@
     <idle class="mineOre"><loot id="coal"/><loot id="iron"/><loot id="titanium"/><loot id="gold"/><loot id="uranium"/><loot id="exotic_matter"/></idle>
   </npc>
 
-  <tilesheet id="space_miner_captain.png" width="29" height="22"/>
+  <tilesheet id="space_miner_captain.png" width="32" height="32"/>
   <tile id="space_miner_captain" sheet="space_miner_captain.png" x="0"/>
   <animation id="space_miner_captain.idle" x="0" count="4"/>
-  <animation id="space_miner_captain.talk" x="0">
-    <frame x="0" count="4" repeat="2"/>
-    <frame x="4" count="2"/>
-    <frame x="6" count="2" repeat="2"/>
-    <frame x="8" count="4"/>
-  </animation>
+  <animation id="space_miner_captain.talk" x="4" count="8"/>
+
   <npc id="space_miner_captain" tile="space_miner_captain" action="talk" talk_sfx="talking1" night="true">
     <operate>
       <section if="!player.hasQuest('space_miners')">
@@ -125,8 +121,8 @@
     <operate>
       <dialogue section="space_miners" id="destroyed" speaker="player" />
       <action>
-        replaceStructure(this,'destroyed_mine_base');
-        player.addMultipleItems('exotic_matter',2, 'magnegem', Std.random(15));
+        player.addMultipleItems('exotic_matter', 2, 'magnegem', Std.random(15));
+        replaceStructure(this);
       </action>
     </operate>
   </structure>

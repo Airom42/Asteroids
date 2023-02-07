@@ -5,5 +5,5 @@
   <include id="space_pirates.xml"/>
   <include id="space_miners.xml"/>
   <include id="solar_system.xml"/>
-  <!-- <include id="wormhole.xml"/> -->
+  <include id="wormhole.xml"/>
 </data>

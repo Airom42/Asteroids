@@ -83,7 +83,7 @@
         <dialogue section="awreck_logs" id="loot_jumpship" speaker="player"/>
         <action>
           player.addMultipleItems("jumpship", 1, "ship_parts", 2, 'titanium', 5);
-          replaceStructure(this,'destroyed_fighter');
+          replaceStructure(this);
         </action>
       </operate>
   </structure>
