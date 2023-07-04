@@ -1,0 +1,26 @@
+<airom>
+  <action>
+    function loadCorvette(player,carrier){
+      //the interior area top-left is (0,0)
+      if(carrier.getXml().get('canLoadVehicles')  == 'true'){
+        bayLocation = getAvailableBay(carrier, player.vehicle);
+        if(bayLocation != null) {
+          player.doTeleport(null,bayLocation.x * Tile.SIZE,bayLocation.y * Tile.SIZE,false,carrier.interior);
+        } else {
+          player.showWarning(getText('warning.no_bay_space'));
+        }
+
+      }
+    }
+    function getAvailableBay(v, small){
+      bayName = small.getXml().get('loadInto');
+      for(b in v.interior.getStructuresById(bayName)){
+        if(!v.interior.hasObjectIdInTile(small.getId(), b.tile_x+1, b.tile_y-1)) return {x:b.tile_x+1, y:b.tile_y-1};
+      }
+    }
+    function unloadCorvette(player){
+      var v = player.vehicle;
+      player.doTeleport(null,(v.area.vehicle.tile_x + v.tile_x) * Tile.SIZE,(v.area.vehicle.tile_y + v.tile_y) * Tile.SIZE,false,v.area.vehicle.area);
+    }
+  </action>
+</airom>

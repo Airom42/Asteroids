@@ -71,25 +71,4 @@
   <recipe id="make_utility_ship_laser" creates="utility_ship_laser" type="advanced_lab" available="getFlag('make_utility_ship')">
     <item id="advanced_tech" count="2" /><item id="laser_gun" count="1" />
   </recipe>
-
-  <!-- <include id="harbringer.xml" />
-
-  <tile id="harbringer" sheet="harbringer.1" />
-  <animation id="harbringer.center" x="1" count="5" />
-  <animation id="harbringer.engine" x="6" count="5" />
-  <animation id="harbringer.weapon" x="11" count="5" />
-
-  <animation id="harbringer.idle" x="0" count="1" length="5">
-    <append tile="harbringer" animation="harbringer.center" />
-  </animation>
-  <animation id="harbringer.hover" equals="harbringer.idle" />
-  <animation id="harbringer.fly" x="0" count="1" length="5">
-    <append tile="harbringer" animation="harbringer.center" />
-    <append tile="harbringer" animation="harbringer.engine" />
-  </animation>
-  <animation id="harbringer.attack" x="0" count="1" length="5">
-    <append tile="harbringer" animation="harbringer.weapon" />
-  </animation>
-
-  <vehicle id="harbringer" extends="jet" tile="harbringer" /> -->
 </data>

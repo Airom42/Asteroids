@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <!-- UEFD Welcome -->
+  <scene id="colony" extends="colony">
+    <tile id="uefd_leader" sheet="{mod:full_version}/space/colony/scenes/sheet.png" x="88" />
+    <layer id="uefd_leader" tile="uefd_leader" animation="single" talk="colony.leader.talk" />
+    <layer id="uefd_engineer" tile="scene.mechanic.mechanic" animation="scene.mechanic.mechanic.idle" talk="scene.mechanic.mechanic.talk" x="0" y="0" />
+    <show id="uefd_leader_welcome">
+      <layer id="command_ship.bg" /><wait seconds="2" />
+      <layer id="uefd_leader" /><hide id="uefd_leader" /><lerp object="uefd_leader" alpha="1" seconds="0.25" />
+      <dialogue section="uefd_leader" id="intro1" speaker="uefd_leader" />
+      <dialogue section="uefd_leader" id="intro2" speaker="player" />
+      <dialogue section="uefd_leader" id="intro3" speaker="uefd_leader" />
+      <dialogue section="uefd_leader" id="intro4" speaker="uefd_leader" />
+      <wait seconds="2" />
+    </show>
+    <show id="uefd_leader.asteroids">
+      <layer id="command_ship.bg" />
+      <layer id="uefd_leader" /><wait seconds="1" />
+      <menu section="colony" width="150" closeable="true">
+        <dialogue section="colony" id="president1" />
+        <choice id="value" values="(['uefd']]).iterator()">
+          <dialogue eval="'uefd_asteroids.'+value+'1'" speaker="uefd_leader" />
+          <dialogue eval="'uefd_asteroids.'+value+'2'" speaker="uefd_leader" />
+          <dialogue eval="'uefd_asteroids.'+value+'3'" speaker="uefd_leader" />
+        </choice>
+      </menu>
+      <wait seconds="1" />
+    </show>
+  </scene>
+
+
+  <!-- UEFD -->
+  <tilesheet id="uefd-engineer.png" width="16" height="16"/>
+  <tile id="uefd_engineer" sheet="uefd-engineer.png"/>
+  <animation id="uefd_engineer.talk" x="0" count="6"/>
+  <animation id="uefd_engineer.walk" x="6" count="10"/>
+  <animation id="uefd_engineer.idle" x="16" count="1"/>
+  <animation id="uefd_engineer.repair" equals="uefd_engineer.idle" length="10"/>
+
+  <npc id="uefd_engineer.asteroids" tile="uefd_engineer" action="talk" talk_sfx="talking6" animation="mechanic">
+    <idle class="repair"><repair type="uefd_engineer"/><repair type="mechanic"/></idle>
+    <operate>
+      <dialogue section="uefd_engineer" id="idle" speaker="this"/>
+    </operate>
+  </npc>
+
+  <tilesheet id="uefd-admiral.png" width="16" height="16"/>
+  <tile id="uefd_leader" sheet="uefd-admiral.png"/>
+  <animation id="uefd_leader.talk" x="0" count="10"/>
+  <animation id="uefd_leader.walk" x="10" count="10"/>
+  <animation id="uefd_leader.idle" x="20" count="1"/>
+  <npc id="uefd_leader.asteroids" tile="uefd_leader" action="talk" talk_sfx="talking7">
+    <idle class="wander" toX="116" />
+    <operate>
+      <scene id="colony" show="uefd_leader.asteroids" with="fade" />
+      <!-- <dialogue section="warning" id="incomplete" speaker="this"/> -->
+    </operate>
+  </npc>
+
+  <tile id="uefd_drone1" sheet="uefd_drone1.png" x="0"/>
+  <animation id="uefd_drone1.walk" x="0" count="4"/>
+  <animation id="uefd_drone1.idle" x="4" count="4"/>
+  <npc id="uefd_drone1" tile="uefd_drone1" speed="2" night="true" behind="true" title="item.names.worker_bot">
+    <idle class="wander" fromX="25" toX="75"/>
+  </npc>
+
+  <tilesheet id="uefd_drone2.png" width="20" height="26"/>
+  <tile id="uefd_drone2" sheet="uefd_drone2.png" x="0"/>
+  <animation id="uefd_drone2.idle" x="0" count="4"/>
+  <animation id="uefd_drone2.walk" x="4" count="4"/>
+  <npc id="uefd_drone2" tile="uefd_drone2" speed="3" night="true" behind="true" title="item.names.worker_bot">
+    <idle class="wander" fromX="25" toX="75"/>
+  </npc>
+
+
+  <tilesheet id="uefd_marine.png" width="15" height="19"/>
+  <tile id="uefd_marine" sheet="uefd_marine.png" x="0"/>
+  <animation id="uefd_marine.idle" x="0" count="4"/>
+  <animation id="uefd_marine.walk" x="4" count="6"/>
+  <animation id="uefd_marine.attack" x="4" count="6"/>
+  <npc id="uefd_marine" tile="uefd_marine" behind="true">
+    <idle class="wander" fromX="30" toX="70"/>
+  </npc>
+
+
+  <npc id="uefd_marine_hunter" tile="uefd_marine" animation="uefd_marine">
+    <idle class="hunt" />
+    <attack type="projectile" damage="5" range="7" animation="attack">
+      <projectile tile="laser_bolt" animation="laser_bolt" speed="5" offsetY="6">
+        <hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+      </projectile>
+    </attack>
+  </npc>
+</data>

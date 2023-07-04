@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <procedure id="generate_abandoned_station">
+    <!-- different station depending on enabled mods (space catwalks and more modules) -->
+      <structure id="station.module.portal" x="50" y="40" />
+
+          <object id="ship_chest" x="23" y="12">
+      this.inventory.addItems(Item.get("power_core"), 1);
+      this.inventory.addItems(Item.get("exotic_matter"), 1);
+      this.inventory.addItems(Item.get("ship_parts"), 5);
+      this.inventory.addItems(Item.get("titanium"), 20);
+    </object>
+
+    <section if="modEnabled('space_catwalks')">
+        
+    </section>
+    </procedure>
+</data>

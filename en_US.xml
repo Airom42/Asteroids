@@ -44,6 +44,7 @@
       <text id="utility_droid">All-purpose combat droid.</text>
       <text id="fighter.mine">[tile=power]Power per Item: 100 \n Mines and collects Items.</text>
       <text id="temporal_crystal">Strange patterns flicker across its surface, and it seems not entirely of this reality.</text>
+      <text id="asteroid_scanner">Allows you to search an asteroid field for a specific biome.</text>
     </section>
     <section id="npc">
       <text id="space_miner">Space Miner</text>
@@ -123,7 +124,7 @@
     </section>
     <section id="asteroid_scanner">
       <text id="not_asteroid_field">Error: Not an asteroid field!</text>
-      <text id="choose_field">Select A Biome.</text>
+      <text id="choose_field">Select a biome to search for:</text>
       <text id="biome_selected">A suitable biome has been located. The next time you enter this asteroid field, that biome will generate.</text>
       <text id="crystal_full">The [item=temporal_crystal] is still completely intact.</text>
       <text id="no_crystal">You do not have any [item=temporal_crystal]s!</text>

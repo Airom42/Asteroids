@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <lang id="en_US">
+    <section id="npc">
+      <text id="uefd_engineer.asteroids">UEFD Engineer</text>
+      <text id="uefd_leader.asteroids">UEFD Admiral</text>
+    </section>
+    <section id="uefd_asteroids">
+        <text id="intro1">Hello stranger. I am the Admiral of the United Earth Fleet Defense. You appear human, so I assume you are another survivor of Earth. Tell me, how did you arrive in this system?</text>
+        <text id="intro2">My colony ship crashed in a system and I reconstructed space capable vessel, mined exomatter, and set out to explore the stars. I seek revenge for the bombardment.</text>
+        <text id="intro3">Ah yes, the Calamari. We have seen no signs of them in this system. We also seek revenge, although our forces are somewhat... limited at the moment.</text>
+        <text id="intro4">Since you are an outsider, we will be forced to confiscate your belongings until your prove your alligiance to this organization. We will provide you with a standard issue Battlesuit, and send you down to the planet to assist in defense.</text>
+        <text id="uefd1">Like all suvivors, the UEFD fled Sol when they attacked.</text>
+        <text id="uefd2">Our ships were damaged by a strange pulse on arrival, which rendered them useless.</text>
+        <text id="uefd3">Since then, we have been trying to stay alive, fighting the natives here for survival.</text>
+      </section>
+  </lang>
+	
+</data>
+	

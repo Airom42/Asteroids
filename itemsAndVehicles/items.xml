@@ -119,9 +119,11 @@
     <item id="exotic_matter" count="1" />
   </recipe>
 
-  <item id="temporal_crystal" extends="exotic_matter" weight="-1"/>
+  <item id="temporal_crystal" extends="exotic_matter" weight="1" color="bf40bf" fps="20"/>
+  <tile id="asteroid_scanner.ico" sheet="icons.png" x="35" />
 
-  <item id="asteroid_scanner" type="tool" cost="2000" weight="0" icon="sonar.ico" unbreakable="true" durability="10">
+
+  <item id="asteroid_scanner" type="tool" cost="2000" weight="0" icon="asteroid_scanner.ico" animation="item13" unbreakable="true" durability="10">
     <action id="use" name="scan_asteroid_field">
       <window type="nav" system="area.planet.system">
         <section if="planetName != null">
@@ -129,7 +131,7 @@
           <choose>
             <dialogue section="asteroid_scanner" id="not_asteroid_field" if="planet.xml.get('asteroid_field') == null" />
             <window width="192" height="112" closeable="true" type="xml">
-              <text text="Choose a field type to search for." x="96" y="4"/>
+              <text section="asteroid_scanner" id="choose_field" x="96" y="4"/>
               <list x="10" y="20" cols="1" rows="5">
                 <renderer width="165" height="16">
                   <tile id="item.icon" x="0" y="0"/>
@@ -175,7 +177,6 @@
     </action>
   </item>
 
-  <!-- TODO: Change to temporal crystal -->
   <section if="modEnabled('ore_scanner')">
     <recipe id="craft_asteroid_scanner" creates="asteroid_scanner">
       <type id="advanced_lab" available="player.questComplete('asteroid_scanner')" />

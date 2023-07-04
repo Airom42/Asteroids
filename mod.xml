@@ -9,6 +9,9 @@
   <loadAfter>Drones</loadAfter>
   <loadAfter>Minigames</loadAfter>
   <loadAfter>Ore Scanner</loadAfter>
+  <loadAfter>Mekaphelin</loadAfter>
+  <loadAfter>More Modules</loadAfter>
+  <loadAfter>Space Catwalks</loadAfter>
   <init>
     <music id="asteroids" /><!-- By Vortechnix -->
     <music id="subterranean_oscillation" /><!-- By Airom -->
@@ -49,7 +52,7 @@
     <dig id="asteroid.magic" cost="4"/>
     <dig id="asteroid.ice" cost="4"/>
 
-    <tile id="temporal_crystal" extends="exotic_matter"/>
+    <tile id="temporal_crystal" extends="exotic_matter" />
 
     <tile id="asteroids_nav" sheet="nav.1" />
     <tile id="asteroids_nav_sol" sheet="nav.2" />
@@ -105,7 +108,6 @@
           <init><runAreaLoad /><action>generateAsteroidArea(this);</action></init>
           <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
           <toNav>
-            
             <section if="!player.questComplete('stabilize_wormhole')">
               <choose>
                 <dialogue section="wormhole" id="exit_field" speaker="player" if="!player.hasItem('temporal_crystal')" />
@@ -117,6 +119,13 @@
         </orbit>
         <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave>
     </planet>
+
+    <planet id="wormhole.abandoned_station" height="80">
+      <orbit id="wormhole.abandoned_station.orbit" width="256" height="64" background="stars.asteroids.orbit" name="system.planet.wormhole_station" type="none" stationMusic="subterranean_oscillation">
+        <init><runAreaLoad /><run procedure="generate_abandoned_station" /></init>
+        <onLoad><music id="asteroids" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /><achievement id="colony" /></onLoad>
+      </orbit>
+	  </planet>
 
     <!-- Extended systems MUST be loaded after the original system -->
     <system id="start" extends="start">
@@ -134,6 +143,7 @@
 
     <system id="wormhole" available="false" x="-10">
       <planet id="asteroids.wormhole" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
+      <planet id="wormhole.abandoned_station" tile="smastirini_nav" offsetX="30" offsetY="30" name="system.planet.wormhole_station" />
     </system>
 
     <!-- UAMT System Addon: The modular system created by the UAMT -->
