@@ -6,11 +6,11 @@
   <version>4.5.2</version>
   <website>https://aground.mod.io/asteroid-field</website>
   <requires>Full Version</requires>
+  <requires>More Modules</requires>
   <loadAfter>Drones</loadAfter>
   <loadAfter>Minigames</loadAfter>
   <loadAfter>Ore Scanner</loadAfter>
   <loadAfter>Mekaphelin</loadAfter>
-  <loadAfter>More Modules</loadAfter>
   <loadAfter>Space Catwalks</loadAfter>
   <init>
     <music id="asteroids" /><!-- By Vortechnix -->
@@ -130,7 +130,7 @@
     <!-- Extended systems MUST be loaded after the original system -->
     <system id="start" extends="start">
       <planet id="asteroids" tile="asteroids_nav" offsetX="60" name="system.planet.asteroids" />
-      <planet id="smastirini" tile="smastirini_nav" offsetX="140" offsetY="40" name="system.planet.smastirini" available="player.hasQuest('find_smastirini')"/>
+      <planet id="smastirini" tile="smastirini_nav" offsetX="60" offsetY="-20" name="system.planet.smastirini" available="player.hasQuest('find_smastirini')"/>
     </system>
 
     <system id="sol" extends="sol">

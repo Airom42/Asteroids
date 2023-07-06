@@ -83,11 +83,11 @@
       <text id="smastirini2">These logs suggest this ship was part of a larger mission...</text>
       <text id="smastirini3">I am picking up a distress signal! I wonder if there might still be survivors...</text>
       <text id="smastirini4">No signs of life... This signal must have been sent long ago...</text>
-      <text id="smastirini5">These are the logs of the Research Vessel the ESA-Smastirini. Our mission was simple: test some drones, return home to Earth.</text>
-      <text id="smastirini6">At first, all seemed well. But when we disengaged our FTL engines, we knew we were in the wrong place. Something... something had altered our path.</text>
+      <text id="smastirini5">These are the logs of the Research Vessel the ESA-Smastirini. Our mission was simple: field testing of new remote operations drones.</text>
+      <text id="smastirini6">At first, all seemed well. But as we recieved scanner reports, we discovered something had gone terribly wrong. We had somehow mis-jumped, an impossibility as according to known science.</text>
       <text id="smastirini7">We began to fear... but nothing seemed out of the ordinary. We started testing our drones... and then it all went wrong.</text>
-      <text id="smastirini8">On day 3, the first ship disappeared. One second it was there, the next it was gone. Someone gave Them a name... the nameless force opposing us.</text>
-      <text id="smastirini9">On day 8, we had harvested enough Exotic Matter for the FTL jump back. But when we engaed the engines, nothing happened. And then all went to hell.</text>
+      <text id="smastirini8">On day 3, the first ship disappeared. One moment it was there, the next it was gone. Someone gave Them a name... the unseen force opposing us.</text>
+      <text id="smastirini9">On day 8, we had harvested enough [item=exotic_matter] for the jump back. But when we engaged the engines, nothing happened. And then all went to hell.</text>
       <text id="smastirini10">The drones turned on us. They destroyed us. Some of our ships may have been able to get away, but I find that possibility unlikely...</text>
       <text id="smastirini11">I can hear them coming now... Goodbye... I hope this log serves as warning to any who may come after...</text>
       <text id="ambush1">These people have been long dead... so who sent the signal?</text>
@@ -97,8 +97,8 @@
       <text id="repair_smastirini">The ship has been destroyed beyond repair.</text>
     </section>
     <section id="space_pirates">
-      <text id="get_utility_ship">I was able to extract the plans for the pirate's ships! I should be able to make my own now!</text>
-      <text id="pirates1">I see you found an [color=770000]Asteroid Field[/color]! I have checked your ship's scanners and they are picking up activity in the area.</text>
+      <text id="get_utility_ship">I was able to extract the plans for the pirate's ships. I should be able to make my own now!</text>
+      <text id="pirates1">I see you found an [color=770000]Asteroid Field[/color]! I have checked your ship's scanner logs and they picked up activity in the area.</text>
       <text id="pirates2">I have reason to suspect it is pirates. Let me just run some tests... [pause=1]Aha! I have locked onto a signal from the pirates' base!</text>
       <text id="pirates3">If you can go and eradicate them, I might be able to make something out of their tech!</text>
       <text id="pirates4">I have killed the pirates the [object=mechanic] asked for... I'll call her on the [item=com_device].</text>

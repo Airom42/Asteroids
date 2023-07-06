@@ -513,7 +513,7 @@
       // replaces a one time lootable structure with a non-lootable version
       // expects input id of loot_structure_id to replace with structure_id
       function replaceStructure(struc){
-        var new_struc = getStructure(struc.id.substring(5));
+        var new_struc = getStructure(struc.info.id.substring(5));
         var wx = struc.tile_x * Tile.SIZE;
         var wy = struc.tile_y * Tile.SIZE;
         struc.area.addStructure(new_struc.create(wx, wy));

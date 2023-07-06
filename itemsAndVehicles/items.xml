@@ -4,7 +4,7 @@
   <tile id="advanced_tech.ico" sheet="icons.png" x="0"/>
   <tile id="utility_droid" sheet="icons.png" x="3"/>
   <tile id="utility_ship.ico" sheet="icons.png" x="24"/>
-  <tile id="smastirini_nav" sheet="icons.png" x="25"/>
+  <tile id="smastirini_nav" sheet="icons.png" x="25" offsetX="85" offsetY="55" />
   <tile id="utility_ship.gun.ico" sheet="icons.png" x="26"/>
   <tile id="utility_ship.laser.ico" sheet="icons.png" x="29"/>
   <tile id="fighter.beam.ico" sheet="icons.png" x="30"/>
