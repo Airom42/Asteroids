@@ -21,15 +21,15 @@
 		<biome id="wormhole" p="1" available="getLocalPlayer().getVar('asteroids_visited') > 10" force="getLocalPlayer().getVar('asteroids_visited') > 50 && !getLocalPlayer().hasSeenItem('temporal_crystal')" />
 	</asteroid_field>
 
-	<wormhole id="asteroids.orbit">
-		<wormhole_exit id="wormhole.orbit" p="4" force="getLocalPlayer().getFlag('never_set')" available="false"/>
-		<wormhole_exit id="asteroids.orbit" p="1" />
-		<wormhole_exit id="asteroids.solar_system.orbit" p="2" />
-		<wormhole_exit id="uamt.asteroids.orbit" p="2" />
-		<wormhole_exit id="depths.orbit" p="1" />
-		<wormhole_exit id="start.gas" p="1"/>
-		<wormhole_exit id="alien_hq.orbit" p="1" available="getLocalPlayer().hasQuest('virus') && !getFlag('alien_hq.locked')" />
-	</wormhole>
+    <wormhole id="asteroids.orbit">
+      <wormhole_exit id="wormhole.asteroids.orbit" p="5" force="!player.hasQuest('stabilize_wormhole')" />
+      <wormhole_exit id="asteroids.orbit" p="1" />
+      <wormhole_exit id="asteroids.solar_system.orbit" p="2" />
+      <wormhole_exit id="uamt.asteroids.orbit" p="1" />
+      <wormhole_exit id="depths.orbit" p="1" />
+      <wormhole_exit id="start.gas" p="1"/>
+      <wormhole_exit id="alien_hq.orbit" p="1" available="getLocalPlayer().hasQuest('virus') && !getFlag('alien_hq.locked')" />
+    </wormhole>
 
 	<biome id="standard">
 		<asteroid id="huge" p="1" />

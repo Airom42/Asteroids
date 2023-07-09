@@ -1,10 +1,11 @@
 # Asteroids
-Thank you for downloading the Asteroids Mod!
+This is a mod for Aground that adds procedurally generated space encounters to the game.
+
 This file is a guide on how to add new asteroid fields, biomes, or even encounters to your own mod! The Asteroids framework is meant to be easily customizable and fully generated from the xml_config file, much like the main game.
 
-First of all, you need to make sure that your mod will load after Asteroids, so your mod recognizes Asteroids's functions. To do this, simple add <loadAfter>Asteroids</loadAfter> between the <version> and <init> tags of your mod.
+First of all, you need to make sure that your mod will load after Asteroids, so your mod recognizes Asteroids's functions. To do this, simply add <loadAfter>Asteroids</loadAfter> between the <version> and <init> tags of your mod.
 
-Next of all, you need to tell an area to load an asteroid field config. To do this, simply add <action>generateAsteroidArea(this);</action> inside the <init> tag of the area. Then, define asteroid_field="config_name" in the area's XML. For examples, see the main mod.xml. If you want the area to regenerate when the player leaves, add <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave> inside the area tag.
+Next, you need to tell an area to load an asteroid field config. To do this, simply add <action>generateAsteroidArea(this);</action> inside the <init> tag of the area. Then, define asteroid_field="config_name" in the area's XML. For examples, see the main mod.xml. If you want the area to regenerate when the player leaves, add <onLeave><invokeLater><action>leaveAsteroidArea(getArea(this.orbit.id));</action></invokeLater></onLeave> to your area as well.
 
 If you have followed the instructions so far, you now have an area ready to load an asteroid config! Next up, you must define the config.
 An asteroid field config is made up of some number of biomes. Each of these biomes are made up of asteroids, ores, exotics, and what happens onLoad (when the player enters).
@@ -41,5 +42,8 @@ Important note: The <enemy> tag in the main biome/asteroid tag means those enemi
 To add a new asteroid, you must define its id, size, size variance, and tile, like so:
 <asteroid id="huge" size="23" size_var="3" tile="asteroid"/>
 Asteroids also support shape, and can have <ore> tags inside them.
+
+Biomes can also contain exotics. Exotics are special encounters that make each time you visit a biome even more unique. To add exotics to your biome, add <exotic type="science" min="1" max="2" percent="0.25">. This means spawn between 1 and 2 science-type exotics 25% of the time.
+Exotics are defined similarly to asteroids, and can contain any of the same tags. See xml_config.xml for examples.
 
 That's all! I hope this was a helpful guide. If you have more questions, feel free to leave comments on Steam or Mod.io, or join the Aground Modding Discord at https://discord.gg/ZDyYpTE.

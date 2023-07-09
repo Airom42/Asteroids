@@ -1,0 +1,7 @@
+- refactored lootable structure code
+- added asteroid scanner
+- added temporal crystals
+- space pirates quest can be completed by talking to the mechanic
+- replaced space miner captain sprite
+- new space station exotic encounters
+- wormholes, and many things beyond them

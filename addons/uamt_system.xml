@@ -23,8 +23,10 @@
       <biome id="crash_site" p="1" available="getLocalPlayer().questComplete('find_smastirini')"/>
       <biome id="pirate_base" p="1" available="getLocalPlayer().questComplete('find_space_pirates')"/>
       <biome id="miner_base" p="1" available="getLocalPlayer().questComplete('space_miners')" force="getLocalPlayer().getFlag('visit_miners')"/>
+      <biome id="space_wyrms" p="1" />
     </asteroid_field>
 
+    <!-- Check if the system exists, if not, it must be created before it can be extended -->
     <section if="getSystem('UAMT_system1') == null">
       <system id="UAMT_system1" bgm="voyage" x="85" y="30"/>
       <lang id="en_US">

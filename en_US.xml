@@ -133,5 +133,8 @@
       <text id="scan_asteroid_field">Scan Asteroid Field</text>
       <text id="replace_crystal">Replace Crystal</text>
     </section>
+    <section id="wormhole">
+      <text id="exit_field">You try to leave, but end up right where you were, feeling like you never left...</text>
+    </section>
   </lang>
 </data>
