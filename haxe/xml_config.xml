@@ -18,6 +18,7 @@
 		<biome id="empty_space" p="1" />
 		<biome id="destroyed_miner_base" p="1"/>
 		<biome id="destroyed_pirate_base" p="1"/>
+		<biome id="ice_field" p="1" />
 		<biome id="wormhole" p="1" available="getLocalPlayer().getVar('asteroids_visited') > 10" force="getLocalPlayer().getVar('asteroids_visited') > 50 && !getLocalPlayer().hasSeenItem('temporal_crystal')" />
 	</asteroid_field>
 
@@ -176,6 +177,19 @@
 		<onLoad>
 			<enemy id="asteroid_miner_drone" count="4" random="2" />
 		</onLoad>
+	</biome>
+
+	<biome id="ice_field" spacing="2" icon="asteroid.ice">
+		<ore id="titanium" percent="0.03" />
+		<ore id="uranium" percent="0.03" />
+		<ore id="spirit_gem" percent="0.03" />
+		<ore id="magnegem" percent="0.03" />
+		<ore id="exotic_matter" percent="0.008" />
+		<ore id="evo_shard" percent="0.008" />
+		<asteroid id="tiny_ice" p="3" />
+		<asteroid id="small_ice" p="2" />
+		<asteroid id="small" p="1" />
+		<exotic type="debris" min="0" max="2" percent="0.1" />
 	</biome>
 
 	<biome id="sparse_magic" spacing="10" asteroidTile="asteroid.magic" icon="asteroid.magic">
@@ -403,7 +417,8 @@
 	<asteroid_field id="wormhole">
 		<!-- <biome id="lo_alien_base" p="1" force="getLocalPlayer().getFlag('never_set')"/> -->
 		<biome id="space_wyrms.wormhole" p="2" />
-		<biome id="warped" p="1"/>
+		<biome id="warped.wormhole" p="1" />
+		<biome id="ice_field.wormhole" p="1" />
 	</asteroid_field>
 
 	<biome id="space_wyrms.wormhole" extends="space_wyrms">
@@ -414,16 +429,21 @@
 		<ore id="temporal_crystal" percent="0.01" />
 	</biome>
 
+	<biome id="ice_field.wormhole" extends="ice_field">
+		<ore id="temporal_crystal" percent="0.01" />
+	</biome>
+
 	<!-- ASTEROIDS -->
 	<asteroid id="huge" size="23" size_var="3"/>
 	<asteroid id="big" size="17" size_var="2"/>
 	<asteroid id="medium" size="12" extends="big" />
 	<asteroid id="small" size="8" size_var="1"/>
 	<asteroid id="tiny" size="4" extends="small" />
-	<asteroid id="tiny_ice" size="4" size_var="1" tile="ice" shape="jagged">
+	<asteroid id="tiny_ice" size="4" size_var="1" tile="asteroid.ice" shape="jagged">
 		<ore id="quartz" percent="0.2" />
 		<ore id="diamond" percent="0.03" />
 	</asteroid>
+	<asteroid id="small_ice" extends="tiny_ice" size="8" />
 	<asteroid id="tiny_magic" size="4" size_var="2" tile="asteroid.magic" shape="strange">
 		<ore id="spirit_gem" percent="0.08" />
 		<ore id="blood_gem" percent="0.08" />

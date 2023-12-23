@@ -50,7 +50,7 @@
     <dig id="asteroid.old" cost="4"/>
     <dig id="asteroid" cost="4"/>
     <dig id="asteroid.magic" cost="4"/>
-    <dig id="asteroid.ice" cost="4"/>
+    <dig id="asteroid.ice" cost="4" slide="true" shovel="false"/>
 
     <tile id="temporal_crystal" extends="exotic_matter" />
 
