@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <include id="wormhole_station.xml" />
+
+  <tilesheet id="wormhole.png" width="256" height="256"/>
+  <tile id="wormhole" sheet="wormhole.png" />
+  <animation id="wormhole.idle" x="0" count="18" />
+  <animation id="wormhole.out" x="0" count="18" reverse="true"/>
+
+  <object id="wormhole.exit" tile="wormhole" animation="wormhole.out" removeOnComplete="true" save="false" layer="item">
+    <addedToArea><sound id="teleport_book" /></addedToArea>
+  </object>
+  <object id="wormhole" tile="wormhole" animation="wormhole.idle" spaceship="true" action="collect" layer="item">
+    <tooltip id="enter" section="structure.tooltip" />
+    <!-- Add warning if entering w/o spaceship? -->
+    <operate>
+      <set id="teleportArea" value="getData('wormhole', this.area.getXml().get('asteroid_field')).getRandomExit()" />
+      <set id="teleportX" value="getArea(teleportArea).getWidth() / 2"/>
+      <teleport area="teleportArea" x="teleportX" y="5" with="ellipse"/>
+      <object id="wormhole.exit" x="teleportX" y="10" area="teleportArea" />
+    </operate>
+  </object>
+
+  <include id="lo_alien.xml" />
+	<tile id="lo_alien" sheet="lo_alien.1" />
+  <animation id="lo_alien.idle" x="57" count="8" repeat="3" />
+	<animation id="lo_alien.walk" equals="lo_alien.idle" />
+  <animation id="lo_alien.talk" equals="lo_alien.idle" />
+	<animation id="lo_alien.hit" x="56" count="1" length="3" />
+	<animation id="lo_alien.uber" x="55" count="1" />
+	<animation id="lo_alien.pre_attack" x="0" count="13"><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.attack" x="13" count="8"><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.pre_fire" x="21" count="13"><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.fire" x="34" count="4"><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.pre_shock" x="38" count="8"><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.shock1" x="46" count="4"><frame visible="false" /><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.shock2" x="50" count="2"><frame visible="false" /><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.shock3" x="52" count="1"><frame visible="false" /><frame x="53" /><frame visible="false" /><frame x="54" /><append tile="lo_alien" animation="lo_alien.uber" behind="true" /></animation>
+	<animation id="lo_alien.open" x="65" count="8"><frame x="73" count="6" repeat="4" /><frame x="65" count="8" reverse="true" /></animation>
+	<tile id="lo_alien.blast" sheet="lo_alien.2" />
+	<animation id="lo_alien.blast" x="4" count="4" />
+	<animation id="lo_alien.blast.impact" x="0" count="4" />
+
+  <npc id="lo_alien_leader" tile="lo_alien" action="talk" animation="lo_alien" night="true" canBombard="false" icon="exiled.ico">
+    <operate>
+      <dialogue section="common" id="asteroids_end" speaker="this" />
+    </operate>
+  </npc>
+
+  <enemy id="lo_alien" tile="lo_alien" health="50" defense="25" range="8" speed="0.5" type="surface" blood="magic.explosion.sm" death_sfx="alien_death" vertical="true" friendlyFire="false" hostileFlag="lo_aliens.hostile">
+    <loot id="alien_heart" />
+		<init><set id="attack_ct" value="0" /></init>
+		<attack type="beam" damage="60" range="4" knockback="20">
+			<pre><play object="this" animation="pre_attack" /></pre>
+			<post><run procedure="hi_alien.cooldown" /></post>
+		</attack>
+		<attack type="projectile" range="14" damage="100" cooldown="600" animation="fire">
+			<pre><play object="this" animation="pre_fire" /></pre>
+			<projectile tile="hi_alien.blast" animation="hi_alien.blast" speed="10" offsetX="-60" hit_sfx="attack" overlap="0.25">
+				<hitEffect tile="hi_alien.blast" animation="hi_alien.blast.impact" color="d750dd" />
+			</projectile>
+			<post><run procedure="hi_alien.cooldown" /></post>
+		</attack>
+		<cooldown seconds="2">
+      <section if="lo_aliens.hostile">
+        <attack type="omni" damage="40" range="2.5" hits="3" animation="shock1" requireTarget="false">
+          <pre><play object="this" animation="pre_shock" /></pre>
+          <cont animation="shock2" />
+          <cont animation="shock3" />
+          <post><run procedure="hi_alien.cooldown" /></post>
+        </attack>
+      </section>
+		</cooldown>
+    <onHit>
+      <dialogue section="wormhole" id="lo_alien_hit" speaker="this" if="!getFlag('lo_aliens.hostile')"/>
+    </onHit>
+    <onDeath>
+      <action>setFlag('lo_aliens.hostile', true)</action>
+    </onDeath>
+  </enemy>
+</data>

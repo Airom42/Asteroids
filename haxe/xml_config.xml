@@ -418,7 +418,7 @@
 		<!-- <biome id="lo_alien_base" p="1" force="getLocalPlayer().getFlag('never_set')"/> -->
 		<biome id="space_wyrms.wormhole" p="2" />
 		<biome id="warped.wormhole" p="1" />
-		<biome id="ice_field.wormhole" p="1" />
+		<biome id="ice_field.wormhole" p="1" available="getLocalPlayer().hasSeenItem('temporal_crystal')"/>
 	</asteroid_field>
 
 	<biome id="space_wyrms.wormhole" extends="space_wyrms">
@@ -527,122 +527,121 @@
 		<function id="research_lab" />
 	</exotic>
 
-
 	<!-- FUNCTIONS -->
 	<action>
-      // replaces a one time lootable structure with a non-lootable version
-      // expects input id of loot_structure_id to replace with structure_id
-      function replaceStructure(struc){
-        var new_struc = getStructure(struc.info.id.substring(5));
-        var wx = struc.tile_x * Tile.SIZE;
-        var wy = struc.tile_y * Tile.SIZE;
-        struc.area.addStructure(new_struc.create(wx, wy));
-        if(struc.area != null) struc.area.removeStructure(struc, null);
-      }
+		// replaces a one time lootable structure with a non-lootable version
+		// expects input id of loot_structure_id to replace with structure_id
+		function replaceStructure(struc){
+			var new_struc = getStructure(struc.info.id.substring(5));
+			var wx = struc.tile_x * Tile.SIZE;
+			var wy = struc.tile_y * Tile.SIZE;
+			struc.area.addStructure(new_struc.create(wx, wy));
+			if(struc.area != null) struc.area.removeStructure(struc, null);
+		}
 
-      function wreck(area) {
-					var rad = 8;
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10; // avoid setting it too high so the debris will be at edge
-          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-          // place wreck
-          for (num in -1...2) {
-              if (Std.random(2) > 0) { continue; }
-              var eObject = getObject('mass_debris' + (Std.random(12)+1));
-              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          }
-      }
+		function wreck(area) {
+			var rad = 8;
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10; // avoid setting it too high so the debris will be at edge
+			clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+			buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+			// place wreck
+			for (num in -1...2) {
+				if (Std.random(2) > 0) { continue; }
+				var eObject = getObject('mass_debris' + (Std.random(12)+1));
+				area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			}
+		}
 
-      function fighter_crash(area) {
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-          // Clear everything around it and spawn a small debris field
-          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-          spawnPatternObjects(area, largeDebris , 15, 3.5, 0.5, wx, wy);
-          area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-          area.addStructure(getFighterDoor(wx,wy, 'destroyed_fighter.interior'));
-      }
+		function fighter_crash(area) {
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+			// Clear everything around it and spawn a small debris field
+			clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+			spawnPatternObjects(area, largeDebris , 15, 3.5, 0.5, wx, wy);
+			area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
+			area.addStructure(getFighterDoor(wx,wy, 'destroyed_fighter.interior'));
+		}
 
-      function pirate_base(area) {
-					var rad = 8;
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-          // place base
-          var eStructure = getStructure('loot_pirate_base');
-          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-      }
+		function pirate_base(area) {
+			var rad = 8;
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+			clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+			buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+			// place base
+			var eStructure = getStructure('loot_pirate_base');
+			area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+		}
 
-      function destroyed_pirate_base(area) {
-        	var rad = 8;
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-          // place structure
-          var eStructure = getStructure('loot_destroyed_pirate_base');
-          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          for (num in -1...2) {
-              if (Std.random(2) > 0) { continue; }
-              var eObject = getObject('mass_debris' + (Std.random(12)+1));
-              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          }
-      }
+		function destroyed_pirate_base(area) {
+			var rad = 8;
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+			clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+			buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+			// place structure
+			var eStructure = getStructure('loot_destroyed_pirate_base');
+			area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			for (num in -1...2) {
+				if (Std.random(2) > 0) { continue; }
+				var eObject = getObject('mass_debris' + (Std.random(12)+1));
+				area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			}
+		}
 
-      function mine_base(area) {
-          var rad = 8;
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-          // place each indivivualy because it wont take compounds
-          var eStructure = getStructure('mine_lab');
-          area.addStructure(eStructure.create((wx-5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          var eStructure = getStructure('mine_bunker');
-          area.addStructure(eStructure.create((wx-4.5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          var eStructure = getStructure('mine_silo');
-          area.addStructure(eStructure.create((wx+3) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          spawnPatternObjects(area, [{ object: "space_miner", p: 1 }], 10, 2, 0.16, wx, wy);
-      }
+		function mine_base(area) {
+			var rad = 8;
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+			clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+			buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+			// place each indivivualy because it wont take compounds
+			var eStructure = getStructure('mine_lab');
+			area.addStructure(eStructure.create((wx-5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			var eStructure = getStructure('mine_bunker');
+			area.addStructure(eStructure.create((wx-4.5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			var eStructure = getStructure('mine_silo');
+			area.addStructure(eStructure.create((wx+3) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			spawnPatternObjects(area, [{ object: "space_miner", p: 1 }], 10, 2, 0.16, wx, wy);
+		}
 
-      function destroyed_mine_base(area) {
-          var rad = 8;
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
-          clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
-          buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
-          // place structure
-          var eStructure = getStructure('loot_destroyed_mine_base');
-          area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          for (num in -1...2) {
-              if (Std.random(2) > 0) { continue; }
-              var eObject = getObject('mass_debris' + (Std.random(12)+1));
-              area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
-          }
-      }
+		function destroyed_mine_base(area) {
+			var rad = 8;
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 10) + 10;
+			clearArea(area, wx-(rad*2), wy-3, wx+(rad*2)+1, wy+3);
+			buildFromSeed(area, wx, wy, rad, 'asteroid', [], 'crescent');
+			// place structure
+			var eStructure = getStructure('loot_destroyed_mine_base');
+			area.addStructure(eStructure.create((wx-2) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			for (num in -1...2) {
+				if (Std.random(2) > 0) { continue; }
+				var eObject = getObject('mass_debris' + (Std.random(12)+1));
+				area.addObject(eObject.create((wx + num * 5) * Tile.SIZE, (wy-1) * Tile.SIZE));
+			}
+		}
 
-      function fighter_crash_solar_system(area) {
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-          // Clear everything around it and spawn a small debris field
-          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-          spawnPatternObjects(area, largeDebris, 15, 3.5, 0.5, wx, wy);
-          area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
-          area.addStructure(getFighterDoor(wx,wy,'destroyed_fighter.solar_system.interior'));
-      }
-      
-      function drone_crash(area) {
-          var wx = Std.random(area.getEndX());
-          var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
-          // Clear everything around it and spawn a small debris field
-          clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
-          spawnPatternObjects(area, smallDebris , 15, 4, 0.3, wx, wy);
-          area.addStructure(getStructure("loot_destroyed_drone").create(wx * Tile.SIZE,wy * Tile.SIZE));
-      }
+		function fighter_crash_solar_system(area) {
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+			// Clear everything around it and spawn a small debris field
+			clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+			spawnPatternObjects(area, largeDebris, 15, 3.5, 0.5, wx, wy);
+			area.addStructure(getStructure("destroyed_fighter").create(wx * Tile.SIZE,wy * Tile.SIZE));
+			area.addStructure(getFighterDoor(wx,wy,'destroyed_fighter.solar_system.interior'));
+		}
+		
+		function drone_crash(area) {
+			var wx = Std.random(area.getEndX());
+			var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
+			// Clear everything around it and spawn a small debris field
+			clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
+			spawnPatternObjects(area, smallDebris , 15, 4, 0.3, wx, wy);
+			area.addStructure(getStructure("loot_destroyed_drone").create(wx * Tile.SIZE,wy * Tile.SIZE));
+		}
 
-    	function research_lab(area) {
+		function research_lab(area) {
 			var wx = Std.random(area.getEndX());
 			var wy = Std.random(getAreaXML(area.id).get('height') - 30) + 20;
 			clearArea(area, wx - 35, wy - 15, wx + 35, wy + 15);
@@ -669,12 +668,12 @@
 	<object id="sass_debris2" animation="debris3" tile="metal_debris2" fps="2" action="collect" layer="item" type="spaceship">
 		<operate>
 			<action>
-      var p = Std.random(100);
-      if (p > 75) {
-        player.addItem("titanium", 2);
-      } else if (p > 50) {
-        player.addItem("titanium", 1);
-      } else player.addItem("steel_bar", 1);
+				var p = Std.random(100);
+				if (p > 75) {
+					player.addItem("titanium", 2);
+				} else if (p > 50) {
+					player.addItem("titanium", 1);
+				} else player.addItem("steel_bar", 1);
 			</action>
 			<remove object="this" />
 		</operate>
@@ -684,12 +683,12 @@
 	<object id="mass_debris1" tile="ship_debris1" action="collect" layer="item">
 		<operate>
 			<action>
-      var p = Std.random(100);
-      if (p > 75) {
-        player.addMultipleItems("titanium", 2, "ship_parts", 1);
-      } else if (p > 50) {
-        player.addMultipleItems("titanium", 4);
-      } else player.addItem("titanium", 2);
+				var p = Std.random(100);
+				if (p > 75) {
+					player.addMultipleItems("titanium", 2, "ship_parts", 1);
+				} else if (p > 50) {
+					player.addMultipleItems("titanium", 4);
+				} else player.addItem("titanium", 2);
 			</action>
 			<remove object="this" />
 		</operate>
@@ -699,12 +698,12 @@
 	<object id="lass_debris1" tile="station_debris1" animation="station_debris" fps="2" action="collect" layer="item">
 		<operate>
 			<action>
-      var p = Std.random(100);
-      if (p > 75) {
-        player.addMultipleItems("titanium", 4, "ship_parts", 1, "ai_core", 1);
-      } else if (p > 50) {
-        player.addMultipleItems("titanium", 2, "ship_parts", 1);
-      } else player.addItem("titanium", 2);
+				var p = Std.random(100);
+				if (p > 75) {
+					player.addMultipleItems("titanium", 4, "ship_parts", 1, "ai_core", 1);
+				} else if (p > 50) {
+					player.addMultipleItems("titanium", 2, "ship_parts", 1);
+				} else player.addItem("titanium", 2);
 			</action>
 			<remove object="this" />
 		</operate>
@@ -732,8 +731,8 @@
 	<action>for(i in 3...8) evalXml('&lt;object id="ltrap_debris'+(i)+'" extends="ltrap_debris2" tile="station_debris'+(i)+'" />')</action>
 
 	<action>
-    smallDebris = [ { object: "sass_debris1", p: 1 }, { object: "sass_debris2", p: 2 }, {object: "sass_debris3", p: 2}, {object: "sass_debris4", p: 2}, {object: "sass_debris5", p: 2}, {object: "sass_debris6", p: 2}, {object: "sass_debris7", p: 2},{ object: "strap_debris2", p: 1 }, { object: "strap_debris3", p: 1 }, { object: "strap_debris4", p: 1 }, { object: "strap_debris5", p: 1 }, { object: "strap_debris6", p: 1 }, { object: "strap_debris7", p: 1 }];
-    largeDebris = [ { object: "sass_debris2", p: 2 }, {object: "sass_debris3", p: 2}, {object: "sass_debris4", p: 2}, {object: "sass_debris5", p: 2}, {object: "sass_debris6", p: 2}, {object: "sass_debris7", p: 2}, { object: "lass_debris2", p: 1 }, { object: "lass_debris3", p: 1 }, { object: "lass_debris4", p: 1 }, { object: "lass_debris5", p: 1 }, { object: "lass_debris6", p: 1 }, { object: "lass_debris7", p: 1 }, { object: "lass_debris8", p: 1 }, { object: "lass_debris9", p: 1 },{ object: "ltrap_debris2", p: 1 }, { object: "ltrap_debris3", p: 1 }, { object: "ltrap_debris4", p: 1 }, { object: "ltrap_debris5", p: 1 }, { object: "ltrap_debris6", p: 1 }, { object: "ltrap_debris7", p: 1 }];
-    groundDebris = [ { object: "mass_debris1", p: 1 }, { object: "mass_debris2", p: 1 }, { object: "mass_debris3", p: 1 }, { object: "mass_debris4", p: 1 }, { object: "mass_debris5", p: 1 }, { object: "mass_debris6", p: 1 }, { object: "mass_debris7", p: 1 }, { object: "mass_debris8", p: 1 }, { object: "mass_debris9", p: 1 }, { object: "mass_debris10", p: 1 }, { object: "mass_debris11", p: 1 }, { object: "mass_debris12", p: 1 }]
+    	smallDebris = [ { object: "sass_debris1", p: 1 }, { object: "sass_debris2", p: 2 }, {object: "sass_debris3", p: 2}, {object: "sass_debris4", p: 2}, {object: "sass_debris5", p: 2}, {object: "sass_debris6", p: 2}, {object: "sass_debris7", p: 2},{ object: "strap_debris2", p: 1 }, { object: "strap_debris3", p: 1 }, { object: "strap_debris4", p: 1 }, { object: "strap_debris5", p: 1 }, { object: "strap_debris6", p: 1 }, { object: "strap_debris7", p: 1 }];
+    	largeDebris = [ { object: "sass_debris2", p: 2 }, {object: "sass_debris3", p: 2}, {object: "sass_debris4", p: 2}, {object: "sass_debris5", p: 2}, {object: "sass_debris6", p: 2}, {object: "sass_debris7", p: 2}, { object: "lass_debris2", p: 1 }, { object: "lass_debris3", p: 1 }, { object: "lass_debris4", p: 1 }, { object: "lass_debris5", p: 1 }, { object: "lass_debris6", p: 1 }, { object: "lass_debris7", p: 1 }, { object: "lass_debris8", p: 1 }, { object: "lass_debris9", p: 1 },{ object: "ltrap_debris2", p: 1 }, { object: "ltrap_debris3", p: 1 }, { object: "ltrap_debris4", p: 1 }, { object: "ltrap_debris5", p: 1 }, { object: "ltrap_debris6", p: 1 }, { object: "ltrap_debris7", p: 1 }];
+    	groundDebris = [ { object: "mass_debris1", p: 1 }, { object: "mass_debris2", p: 1 }, { object: "mass_debris3", p: 1 }, { object: "mass_debris4", p: 1 }, { object: "mass_debris5", p: 1 }, { object: "mass_debris6", p: 1 }, { object: "mass_debris7", p: 1 }, { object: "mass_debris8", p: 1 }, { object: "mass_debris9", p: 1 }, { object: "mass_debris10", p: 1 }, { object: "mass_debris11", p: 1 }, { object: "mass_debris12", p: 1 }]
 	</action>
 </data>

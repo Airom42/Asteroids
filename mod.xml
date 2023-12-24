@@ -108,7 +108,7 @@
           <toNav>
             <section if="!player.questComplete('stabilize_wormhole')">
               <choose>
-                <dialogue section="wormhole" id="exit_field" if="!player.hasItem('temporal_crystal')" />
+                <dialogue section="wormhole" id="exit_field" if="!player.hasSeenItem('temporal_crystal')" />
                 <teleport area="wormhole.planet.orbit" x="140" y="5" with="ellipse"/>
               </choose>
               <stop />
@@ -132,7 +132,7 @@
         <toNav>
           <section if="!player.questComplete('stabilize_wormhole')">
             <choose>
-              <dialogue section="wormhole" id="exit_field" if="!player.hasItem('temporal_crystal')" />
+              <dialogue section="wormhole" id="exit_field" if="!player.hasSeenItem('temporal_crystal')" />
               <teleport area="wormhole.asteroids.orbit" x="140" y="5" with="ellipse"/>
             </choose>
             <stop />

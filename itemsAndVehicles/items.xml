@@ -38,10 +38,12 @@
     <projectile tile="mine_beam" animation="mine_beam" speed="5" breakTile="6" breakPower="20" offsetX="40" offsetY="-23"/>
     <handleSecond>
       <action>
-          for(i in area.getAllObjects()) if(i == 'ItemObject' && getItem(i.getId()).type.id != 'object' && player.vehicle.getFuel() >= 100){
-            player.addItem(i.getId());
-            area.removeObject(i);
-            player.vehicle.useFuel(100);
+          for(i in area.getAllObjects()) {
+            if(((i == 'ItemObject' && getItem(i.getId()).type.id != 'object') || (i.info.id == 'spirit_gem' && area.isOrbit())) && player.vehicle.getFuel() >= 100){
+              player.addItem(i.getId());
+              area.removeObject(i);
+              player.vehicle.useFuel(100);
+          }
           }
       </action>
     </handleSecond>

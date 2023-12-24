@@ -7,3 +7,4 @@ v4.6.0
 - new space station exotic encounters
 - wormholes, and many things beyond them
 - new asteroids ice tile
+- figher laser now picks up spirit gems

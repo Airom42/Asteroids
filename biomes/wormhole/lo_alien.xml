@@ -1,5 +1,5 @@
 <sheets>
-<tilesheet id='alien.1' sheet='alien.png' width='28' height='29' offsetX='-99' offsetY='-50'>
+<tilesheet id='lo_alien.1' sheet='lo_alien.png' width='28' height='29' offsetX='-99' offsetY='-50'>
 	<image frame='0' x='76' y='210' width='3' height='3' offsetX='110' offsetY='56' />
 	<image frame='1' x='76' y='206' width='4' height='4' offsetX='109' offsetY='56' />
 	<image frame='2' x='434' y='35' width='5' height='5' offsetX='108' offsetY='55' />
@@ -80,7 +80,7 @@
 	<image frame='77' equals='71' offsetX='98' offsetY='49' />
 	<image frame='78' equals='72' offsetX='98' offsetY='49' />
 </tilesheet>
-<tilesheet id='alien.2' sheet='alien.png' width='84' height='35' offsetY='-45'>
+<tilesheet id='lo_alien.2' sheet='lo_alien.png' width='84' height='35' offsetY='-45'>
 	<image frame='0' x='0' y='238' width='71' height='87' offsetX='0' offsetY='35' />
 	<image frame='1' x='0' y='114' width='61' height='124' offsetX='0' offsetY='4' />
 	<image frame='2' x='0' y='0' width='80' height='114' offsetX='0' offsetY='12' />

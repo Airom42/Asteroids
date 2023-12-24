@@ -135,6 +135,7 @@
     </section>
     <section id="wormhole">
       <text id="exit_field">You try to leave, but end up right where you were, feeling like you never left...</text>
+      <text id="lo_alien_hit">[font=drachenklaue]what the fuck man?!?[/font]</text>
     </section>
   </lang>
 </data>
